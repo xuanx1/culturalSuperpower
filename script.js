@@ -116,7 +116,7 @@ function loadIndiaStateBoundaries() {
             console.log('Make sure india-adm.geojson file is in the same directory as index.html');
         });
     
-    // Load India border for reverse mask effect
+    // Load India border for offset contours effect AND reverse mask
     fetch('india-border.geojson')
         .then(response => {
             if (!response.ok) {
@@ -125,6 +125,17 @@ function loadIndiaStateBoundaries() {
             return response.json();
         })
         .then(geojsonData => {
+            // Define 4 colors fading from purple (inner) to black (outer)
+            const purpleToBlackShades = [
+                '#1a1a1a', // Near black (outermost ring)
+                '#4d1a4d', // Dark purple-black
+                '#6b2c6b', // Medium purple
+                '#8e44ad'  // Bright purple (innermost ring, near border)
+            ];
+            
+            // Create offset distances (in approximate degrees - rough buffer simulation)
+            const offsetDistances = [0.8, 0.6, 0.4, 0.2]; // Decreasing distances for inner rings
+            
             // Get India's coordinates from the GeoJSON
             const indiaFeature = geojsonData.features[0];
             let indiaCoords = [];
@@ -143,7 +154,59 @@ function loadIndiaStateBoundaries() {
                 indiaCoords = largestPoly[0].map(coord => [coord[1], coord[0]]);
             }
             
-            // Create a world polygon with India as a hole (reverse mask)
+            // Function to create proper offset contours (perpendicular distance buffering)
+            function createOffsetContour(coords, distance) {
+                const offsetCoords = [];
+                
+                for (let i = 0; i < coords.length; i++) {
+                    const prevIndex = (i - 1 + coords.length) % coords.length;
+                    const nextIndex = (i + 1) % coords.length;
+                    
+                    const prev = coords[prevIndex];
+                    const curr = coords[i];
+                    const next = coords[nextIndex];
+                    
+                    // Calculate vectors from current point
+                    const v1 = [curr[0] - prev[0], curr[1] - prev[1]];
+                    const v2 = [next[0] - curr[0], next[1] - curr[1]];
+                    
+                    // Normalize vectors
+                    const len1 = Math.sqrt(v1[0] * v1[0] + v1[1] * v1[1]);
+                    const len2 = Math.sqrt(v2[0] * v2[0] + v2[1] * v2[1]);
+                    
+                    if (len1 > 0) {
+                        v1[0] /= len1;
+                        v1[1] /= len1;
+                    }
+                    if (len2 > 0) {
+                        v2[0] /= len2;
+                        v2[1] /= len2;
+                    }
+                    
+                    // Calculate perpendicular vectors (rotate 90 degrees)
+                    const perp1 = [-v1[1], v1[0]];
+                    const perp2 = [-v2[1], v2[0]];
+                    
+                    // Average the perpendicular vectors for the normal at this point
+                    let normal = [(perp1[0] + perp2[0]) / 2, (perp1[1] + perp2[1]) / 2];
+                    const normalLen = Math.sqrt(normal[0] * normal[0] + normal[1] * normal[1]);
+                    
+                    if (normalLen > 0) {
+                        normal[0] /= normalLen;
+                        normal[1] /= normalLen;
+                    }
+                    
+                    // Apply distance offset in the normal direction
+                    offsetCoords.push([
+                        curr[0] + normal[0] * distance,
+                        curr[1] + normal[1] * distance
+                    ]);
+                }
+                
+                return offsetCoords;
+            }
+            
+            // CREATE REVERSE MASK FIRST (black world with India hole)
             const worldWithIndiaHole = L.polygon([
                 // Outer ring - covers the entire world
                 [
@@ -157,31 +220,47 @@ function loadIndiaStateBoundaries() {
                 indiaCoords
             ], {
                 fillColor: 'black',
-                fillOpacity: 0.8,
+                fillOpacity: 0.9,
                 weight: 0,
                 color: 'transparent'
             });
             
-            // Add the mask with hole to map
+            // Add the mask with hole to map FIRST
             worldWithIndiaHole.addTo(map);
             
-            // Add India border outline on top
+            // Create 4 offset contour rings (from outer to inner) ON TOP of mask
+            for (let i = 0; i < 4; i++) {
+                const bufferedCoords = createOffsetContour(indiaCoords, offsetDistances[i]);
+                
+                // Set specific opacity for the outermost ring (#1a1a1a)
+                const ringOpacity = (i === 0) ? 0.2 : 0.8;
+                
+                L.polygon(bufferedCoords, {
+                    fillColor: 'transparent',
+                    fillOpacity: 0,
+                    weight: 3,
+                    opacity: ringOpacity,
+                    color: purpleToBlackShades[i]
+                }).addTo(map);
+            }
+            
+            // Add the original India border on top with thick outline
             L.geoJSON(geojsonData, {
                 style: function(feature) {
                     return {
                         fillColor: 'transparent',
-                        weight: 10,
+                        weight: 6,
                         opacity: 1,
-                        color: '#8e44ad',
+                        color: '#663399', // Deep purple for the main border
                         fillOpacity: 0
                     };
                 }
             }).addTo(map);
             
-            console.log('India reverse mask effect loaded successfully');
+            console.log('India offset contours with reverse mask loaded successfully');
         })
         .catch(error => {
-            console.warn('Could not load India border for mask effect:', error);
+            console.warn('Could not load India border for contours and mask:', error);
             console.log('Make sure india-border.geojson file is in the same directory as index.html');
         });
 }
