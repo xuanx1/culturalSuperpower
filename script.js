@@ -60,13 +60,25 @@ function addMarkersToMap(sites) {
         // Create marker
         const marker = L.marker(site.coordinates, { icon: icon });
         
-        // Create popup content
-        const popupContent = createPopupContent(site);
-        marker.bindPopup(popupContent);
+        // Create hover popup content (simplified)
+        const hoverPopupContent = createHoverPopupContent(site);
+        marker.bindPopup(hoverPopupContent, {
+            autoPan: false,
+            closeButton: false
+        });
         
-        // Add click event to show sidebar
+        // Add hover events to show popup
+        marker.on('mouseover', function() {
+            this.openPopup();
+        });
+        
+        marker.on('mouseout', function() {
+            this.closePopup();
+        });
+        
+        // Add click event to show detailed modal
         marker.on('click', function() {
-            showSiteDetails(site);
+            showSiteDetailsModal(site);
         });
         
         // Store site data with marker for filtering
@@ -77,7 +89,24 @@ function addMarkersToMap(sites) {
     });
 }
 
-// Create popup content for markers
+// Create hover popup content for markers (simplified)
+function createHoverPopupContent(site) {
+    const isOptimal = isOptimalTime(site.bestMonths);
+    const optimalStatus = isOptimal ? 
+        '<div style="color: green; font-weight: bold; font-size: 0.85em;">🌟 Great time to visit!</div>' : 
+        '<div style="color: orange; font-weight: bold; font-size: 0.85em;">⏰ Check best time to visit</div>';
+    
+    return `
+        <div class="hover-popup-content">
+            <div class="popup-title" style="font-size: 1.1em; margin-bottom: 5px;">${site.name}</div>
+            <div class="popup-religion" style="font-size: 0.9em; margin-bottom: 8px;">${renderIcon(site.religion, '14px')} ${site.religion.charAt(0).toUpperCase() + site.religion.slice(1)} • ${site.state}</div>
+            ${optimalStatus}
+            <div style="margin-top: 8px; font-size: 0.8em; color: #666;">Click for details</div>
+        </div>
+    `;
+}
+
+// Create popup content for markers (legacy function, now used for hover)
 function createPopupContent(site) {
     const isOptimal = isOptimalTime(site.bestMonths);
     const optimalStatus = isOptimal ? 
@@ -144,13 +173,14 @@ function renderIcon(religion, size = '16px', className = '', forMarker = false) 
     }
 }
 
-// Show detailed site information in sidebar
-function showSiteDetails(siteId) {
+// Show detailed site information in modal
+function showSiteDetailsModal(siteId) {
     const site = typeof siteId === 'object' ? siteId : religiousSites.find(s => s.id === siteId);
     if (!site) return;
     
-    const sidebar = document.getElementById('sidebar');
-    const content = document.getElementById('sidebarContent');
+    const modal = document.getElementById('siteModal');
+    const title = document.getElementById('siteModalTitle');
+    const content = document.getElementById('siteModalContent');
     
     const isOptimal = isOptimalTime(site.bestMonths);
     const nextOptimal = isOptimal ? null : getNextOptimalTime(site.bestMonths);
@@ -162,6 +192,9 @@ function showSiteDetails(siteId) {
         })
         .filter(festival => !festival.countdown.expired)
         .sort((a, b) => new Date(a.date) - new Date(b.date));
+    
+    // Set modal title
+    title.innerHTML = `${renderIcon(site.religion, '24px')} ${site.name}`;
     
     // Create photo gallery if photos exist
     const photoGallery = site.photos && site.photos.length > 0 ? `
@@ -188,8 +221,6 @@ function showSiteDetails(siteId) {
     
     content.innerHTML = `
         <div class="site-info">
-            <h2 class="site-title">${renderIcon(site.religion, '20px')} ${site.name}</h2>
-            
             ${photoGallery}
             
             <div class="site-details">
@@ -252,7 +283,12 @@ function showSiteDetails(siteId) {
         </div>
     `;
     
-    sidebar.classList.add('active');
+    modal.style.display = 'block';
+}
+
+// Legacy function for backward compatibility (now redirects to modal)
+function showSiteDetails(siteId) {
+    showSiteDetailsModal(siteId);
 }
 
 // Populate filter dropdowns
@@ -309,9 +345,12 @@ function setupEventListeners() {
         }
     });
     
-    // Close sidebar
-    document.getElementById('closeSidebar').addEventListener('click', function() {
-        document.getElementById('sidebar').classList.remove('active');
+    // Site details modal
+    const siteModal = document.getElementById('siteModal');
+    const siteModalClose = siteModal.querySelector('.site-modal-close');
+    
+    siteModalClose.addEventListener('click', function() {
+        siteModal.style.display = 'none';
     });
     
     // Countdown modal
@@ -339,6 +378,9 @@ function setupEventListeners() {
         }
         if (event.target === photoModal) {
             photoModal.style.display = 'none';
+        }
+        if (event.target === siteModal) {
+            siteModal.style.display = 'none';
         }
     });
 }

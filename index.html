@@ -9,11 +9,6 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="header">
-        <h1><i class="fas fa-om"></i> Sacred Sites of India</h1>
-        <p>Discover India's spiritual heritage with optimal visit times and countdown timers</p>
-    </div>
-
     <div class="controls">
         <div class="filters">
             <select id="religionFilter">
@@ -45,14 +40,17 @@
 
     <div class="main-container">
         <div id="map"></div>
-        
-        <div id="sidebar" class="sidebar">
-            <div class="sidebar-header">
-                <h3>Site Information</h3>
-                <button id="closeSidebar">&times;</button>
+    </div>
+
+    <!-- Site Details Modal -->
+    <div id="siteModal" class="modal site-modal">
+        <div class="modal-content site-modal-content">
+            <div class="modal-header">
+                <h2 id="siteModalTitle">Site Information</h2>
+                <span class="close site-modal-close">&times;</span>
             </div>
-            <div id="sidebarContent" class="sidebar-content">
-                <p>Click on any marker to view detailed information about the religious site.</p>
+            <div id="siteModalContent" class="site-modal-body">
+                <!-- Site details will be populated here -->
             </div>
         </div>
     </div>

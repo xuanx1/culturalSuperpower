@@ -444,7 +444,7 @@ const religiousSites = [
     {
         id: 13,
         name: "Jama Masjid, Delhi",
-        religion: "islamic",
+        religion: "islam",
         state: "Delhi",
         coordinates: [28.6507, 77.2334],
         significance: "Largest mosque in India",
@@ -470,7 +470,7 @@ const religiousSites = [
     {
         id: 14,
         name: "Ajmer Sharif Dargah",
-        religion: "islamic",
+        religion: "islam",
         state: "Rajasthan",
         coordinates: [26.4499, 74.6399],
         significance: "Shrine of Sufi saint Moinuddin Chishti",
@@ -1116,7 +1116,7 @@ const religiousSites = [
     {
         id: 37,
         name: "Fatehpur Sikri",
-        religion: "islamic",
+        religion: "islam",
         state: "Uttar Pradesh",
         coordinates: [27.0937, 77.6615],
         significance: "UNESCO World Heritage Mughal city",
@@ -1138,7 +1138,7 @@ const religiousSites = [
     {
         id: 38,
         name: "Haji Ali Dargah",
-        religion: "islamic",
+        religion: "islam",
         state: "Maharashtra",
         coordinates: [18.9826, 72.8095],
         significance: "Famous mosque and dargah on islet in Arabian Sea",
@@ -1160,7 +1160,7 @@ const religiousSites = [
     {
         id: 39,
         name: "Nizamuddin Dargah",
-        religion: "islamic",
+        religion: "islam",
         state: "Delhi",
         coordinates: [28.5933, 77.2507],
         significance: "Shrine of Sufi saint Nizamuddin Auliya",
@@ -1650,7 +1650,7 @@ const religiousSites = [
     {
         id: 58,
         name: "Gol Gumbaz",
-        religion: "islamic",
+        religion: "islam",
         state: "Karnataka",
         coordinates: [17.3280, 75.7139],
         significance: "Mausoleum with world's second largest dome",
@@ -1672,7 +1672,7 @@ const religiousSites = [
     {
         id: 59,
         name: "Charminar",
-        religion: "islamic",
+        religion: "islam",
         state: "Telangana",
         coordinates: [17.3616, 78.4747],
         significance: "Iconic monument and mosque built in 1591",
@@ -1694,7 +1694,7 @@ const religiousSites = [
     {
         id: 60,
         name: "Ibrahim Roza",
-        religion: "islamic",
+        religion: "islam",
         state: "Karnataka",
         coordinates: [17.3139, 75.7258],
         significance: "Elegant Islamic tomb often called Taj Mahal of Deccan",
@@ -1844,6 +1844,677 @@ const religiousSites = [
         travelTips: "Experience langar (free community kitchen). Beautiful reflection of golden dome in sarovar.",
         nearestAirport: "Indira Gandhi International Airport (15 km)",
         nearestRailway: "New Delhi Railway Station (3 km)"
+    },
+
+    // Missing Major Hindu Sites
+    {
+        id: 66,
+        name: "Amarnath Cave Temple",
+        religion: "hindu",
+        state: "Jammu and Kashmir",
+        coordinates: [34.2134, 75.3133],
+        significance: "Sacred cave shrine housing natural ice Shiva Lingam",
+        description: "One of the holiest shrines of Hinduism, located at an altitude of 3,888 meters. The cave naturally forms an ice Shiva Lingam during summer months.",
+        bestTimeToVisit: "July to August (Yatra period)",
+        bestMonths: [7, 8],
+        festivals: [
+            {
+                name: "Amarnath Yatra",
+                date: "2025-07-01 to 2025-08-31",
+                description: "Annual pilgrimage to the holy cave",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Requires advance registration. Choose between Pahalgam (46 km) or Baltal (14 km) routes. Helicopter services available.",
+        nearestAirport: "Srinagar Airport (95 km)",
+        nearestRailway: "Jammu Tawi (350 km)",
+        photos: ["https://images.unsplash.com/photo-1582719471384-894fbb16e074"]
+    },
+
+    {
+        id: 67,
+        name: "Mahakaleshwar Temple, Ujjain",
+        religion: "hindu",
+        state: "Madhya Pradesh",
+        coordinates: [23.1825, 75.7681],
+        significance: "One of the 12 Jyotirlingas, famous for Bhasma Aarti",
+        description: "Sacred Jyotirlinga temple dedicated to Lord Shiva. Famous for its unique Bhasma Aarti performed with cremation ground ash at dawn.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Mahashivratri",
+                date: "2025-02-26",
+                description: "Grand celebration with special rituals",
+                rarity: "annual"
+            },
+            {
+                name: "Simhastha Kumbh Mela",
+                date: "2028-04-13 to 2028-05-26",
+                description: "Once in 12 years grand gathering",
+                rarity: "12-yearly"
+            }
+        ],
+        travelTips: "Book Bhasma Aarti in advance. Morning 4 AM aarti is most sacred. Avoid Mondays and festival days for shorter queues.",
+        nearestAirport: "Devi Ahilya Bai Holkar Airport, Indore (55 km)",
+        nearestRailway: "Ujjain Junction (2 km)",
+        photos: ["https://images.unsplash.com/photo-1594736797933-d0d5b4d18e54"]
+    },
+
+    {
+        id: 68,
+        name: "Omkareshwar Temple",
+        religion: "hindu",
+        state: "Madhya Pradesh",
+        coordinates: [22.2394, 76.1314],
+        significance: "One of the 12 Jyotirlingas on Mandhata Island",
+        description: "Sacred Jyotirlinga situated on an Om-shaped island formed by river Narmada. The island resembles the Hindu symbol 'Om' when viewed from above.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Mahashivratri",
+                date: "2025-02-26",
+                description: "Special prayers and celebrations",
+                rarity: "annual"
+            },
+            {
+                name: "Kartik Purnima",
+                date: "2025-11-15",
+                description: "Sacred bath in Narmada river",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Take a boat ride around the island. Visit both Omkareshwar and Mamleshwar temples. River aarti in evening is beautiful.",
+        nearestAirport: "Devi Ahilya Bai Holkar Airport, Indore (77 km)",
+        nearestRailway: "Omkareshwar Road (12 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 69,
+        name: "Pushkar Temple",
+        religion: "hindu",
+        state: "Rajasthan",
+        coordinates: [26.4855, 74.5512],
+        significance: "Only Brahma temple in the world and sacred lake",
+        description: "Rare temple dedicated to Lord Brahma, one of the few in the world. The sacred Pushkar Lake is believed to have been created by lotus petals dropped by Brahma.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Pushkar Camel Fair",
+                date: "2025-11-01 to 2025-11-09",
+                description: "World famous camel fair and cultural festival",
+                rarity: "annual"
+            },
+            {
+                name: "Kartik Purnima",
+                date: "2025-11-15",
+                description: "Sacred bath in Pushkar Lake",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Take holy dip in Pushkar Lake. Visit during sunset for magical atmosphere. Strict vegetarian town - no alcohol or meat.",
+        nearestAirport: "Jaipur Airport (145 km)",
+        nearestRailway: "Ajmer Junction (15 km)",
+        photos: ["https://images.unsplash.com/photo-1581833971358-2c8b550f87b3"]
+    },
+
+    {
+        id: 70,
+        name: "Mathura Vrindavan",
+        religion: "hindu",
+        state: "Uttar Pradesh",
+        coordinates: [27.4924, 77.6737],
+        significance: "Birthplace of Lord Krishna and Radha's abode",
+        description: "Twin holy cities - Mathura as Krishna's birthplace and Vrindavan where he spent his childhood. Over 5000 temples dedicated to Krishna and Radha.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Janmashtami",
+                date: "2025-08-17",
+                description: "Krishna's birthday celebration",
+                rarity: "annual"
+            },
+            {
+                name: "Holi Festival",
+                date: "2025-03-14",
+                description: "Festival of colors at Krishna's birthplace",
+                rarity: "annual"
+            },
+            {
+                name: "Radhashtami",
+                date: "2025-09-01",
+                description: "Radha's birthday celebration",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Visit Krishna Janmabhoomi Temple in Mathura and Banke Bihari Temple in Vrindavan. Evening aarti at Yamuna ghats is divine.",
+        nearestAirport: "Agra Airport (60 km)",
+        nearestRailway: "Mathura Junction (5 km)",
+        photos: ["https://images.unsplash.com/photo-1590736969955-71cc94901144"]
+    },
+
+    {
+        id: 71,
+        name: "Haridwar",
+        religion: "hindu",
+        state: "Uttarakhand",
+        coordinates: [29.9457, 78.1642],
+        significance: "Gateway to char dham and sacred Ganga Aarti",
+        description: "One of the seven holiest cities in Hinduism where river Ganga enters the plains. Gateway to Char Dham yatra and venue of Kumbh Mela.",
+        bestTimeToVisit: "October to February",
+        bestMonths: [10, 11, 12, 1, 2],
+        festivals: [
+            {
+                name: "Kumbh Mela",
+                date: "2022-01-14 to 2022-04-30",
+                description: "Maha Kumbh held every 12 years",
+                rarity: "12-yearly"
+            },
+            {
+                name: "Ganga Aarti",
+                date: "Daily at sunset",
+                description: "Daily prayer ceremony at Har Ki Pauri",
+                rarity: "daily"
+            }
+        ],
+        travelTips: "Attend evening Ganga Aarti at Har Ki Pauri. Take holy dip at Brahma Kund. Visit Mansa Devi and Chandi Devi temples via cable car.",
+        nearestAirport: "Jolly Grant Airport, Dehradun (35 km)",
+        nearestRailway: "Haridwar Junction (2 km)",
+        photos: ["https://images.unsplash.com/photo-1609920658906-8223bd289001"]
+    },
+
+    {
+        id: 72,
+        name: "Bhimashankar Temple",
+        religion: "hindu",
+        state: "Maharashtra",
+        coordinates: [19.0717, 73.5347],
+        significance: "One of the 12 Jyotirlingas in Sahyadri Mountains",
+        description: "Sacred Jyotirlinga temple located in the Sahyadri mountains. Believed to be the place where Lord Shiva defeated demon Bhima.",
+        bestTimeToVisit: "October to February",
+        bestMonths: [10, 11, 12, 1, 2],
+        festivals: [
+            {
+                name: "Mahashivratri",
+                date: "2025-02-26",
+                description: "Grand celebration with thousands of devotees",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Trek through beautiful forest. Spot the endangered giant squirrel. Carry warm clothes as temperature drops at night.",
+        nearestAirport: "Pune Airport (110 km)",
+        nearestRailway: "Karjat Junction (80 km)",
+        photos: ["https://images.unsplash.com/photo-1582719471384-894fbb16e074"]
+    },
+
+    {
+        id: 73,
+        name: "Grishneshwar Temple",
+        religion: "hindu",
+        state: "Maharashtra",
+        coordinates: [20.0244, 75.1792],
+        significance: "Last and 12th Jyotirlinga near Ellora Caves",
+        description: "The last of the 12 Jyotirlingas, located near the famous Ellora Caves. Built in 18th century with beautiful stone architecture.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Mahashivratri",
+                date: "2025-02-26",
+                description: "Special prayers and cultural programs",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Combine visit with Ellora and Ajanta Caves. Red stone architecture is beautiful during golden hour.",
+        nearestAirport: "Aurangabad Airport (30 km)",
+        nearestRailway: "Aurangabad Railway Station (30 km)",
+        photos: ["https://images.unsplash.com/photo-1594736797933-d0d5b4d18e54"]
+    },
+
+    // More Critical Hindu Sites
+    {
+        id: 74,
+        name: "Mallikarjuna Temple, Srisailam",
+        religion: "hindu",
+        state: "Andhra Pradesh",
+        coordinates: [16.0730, 78.8687],
+        significance: "One of 12 Jyotirlingas in Nallamala Hills",
+        description: "Sacred Jyotirlinga temple located in dense Nallamala forest. Also a Shakti Peetha where Sati's neck fell, making it doubly sacred.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Mahashivratri",
+                date: "2025-02-26",
+                description: "Grand celebration with special rituals",
+                rarity: "annual"
+            },
+            {
+                name: "Brahmostava",
+                date: "2025-09-15 to 2025-09-24",
+                description: "Nine-day festival with processions",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Take boat ride on Krishna river. Visit during full moon for magical atmosphere. Forest safari available.",
+        nearestAirport: "Rajiv Gandhi International Airport, Hyderabad (215 km)",
+        nearestRailway: "Markapur Road (85 km)",
+        photos: ["https://images.unsplash.com/photo-1582719471384-894fbb16e074"]
+    },
+
+    {
+        id: 75,
+        name: "Nageshwar Jyotirlinga, Dwarka",
+        religion: "hindu",
+        state: "Gujarat",
+        coordinates: [22.4707, 69.0921],
+        significance: "One of 12 Jyotirlingas near Dwarka",
+        description: "Sacred Jyotirlinga temple believed to protect devotees from all poisons. Features a large 25-meter statue of Lord Shiva.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Mahashivratri",
+                date: "2025-02-26",
+                description: "Special prayers and celebrations",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Visit the 25-meter Shiva statue. Combine with Dwarka Dham visit. Beautiful sunset views.",
+        nearestAirport: "Jamnagar Airport (137 km)",
+        nearestRailway: "Dwarka Railway Station (17 km)",
+        photos: ["https://images.unsplash.com/photo-1594736797933-d0d5b4d18e54"]
+    },
+
+    {
+        id: 76,
+        name: "Rameshwaram Temple",
+        religion: "hindu",
+        state: "Tamil Nadu",
+        coordinates: [9.2876, 79.3129],
+        significance: "One of 12 Jyotirlingas and Char Dham pilgrimage",
+        description: "Sacred Jyotirlinga temple on Pamban Island, where Lord Rama prayed before crossing to Lanka. Famous for its long corridors and 22 holy wells.",
+        bestTimeToVisit: "October to April",
+        bestMonths: [10, 11, 12, 1, 2, 3, 4],
+        festivals: [
+            {
+                name: "Mahashivratri",
+                date: "2025-02-26",
+                description: "Grand celebration with abhishekam",
+                rarity: "annual"
+            },
+            {
+                name: "Ram Navami",
+                date: "2025-04-06",
+                description: "Lord Rama's birthday celebration",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Take holy bath at Agni Theertham beach. Don't miss the 1000-pillar hall. Visit Dhanushkodi ruins nearby.",
+        nearestAirport: "Madurai Airport (174 km)",
+        nearestRailway: "Rameswaram Railway Station (2 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 77,
+        name: "Tirupati Balaji Temple",
+        religion: "hindu",
+        state: "Andhra Pradesh",
+        coordinates: [13.6837, 79.3472],
+        significance: "Richest temple dedicated to Lord Venkateswara",
+        description: "Most visited and richest temple in the world dedicated to Lord Venkateswara (Vishnu). Located on Tirumala Hills, it receives millions of devotees annually.",
+        bestTimeToVisit: "September to February",
+        bestMonths: [9, 10, 11, 12, 1, 2],
+        festivals: [
+            {
+                name: "Brahmotsavam",
+                date: "2025-09-12 to 2025-09-20",
+                description: "Nine-day grand festival with processions",
+                rarity: "annual"
+            },
+            {
+                name: "Vaikunta Ekadashi",
+                date: "2025-01-10",
+                description: "Most auspicious day for darshan",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Book darshan tickets online in advance. Free meals available. Hair donation tradition for devotees.",
+        nearestAirport: "Tirupati Airport (15 km)",
+        nearestRailway: "Tirupati Railway Station (20 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 78,
+        name: "Shirdi Sai Baba Temple",
+        religion: "hindu",
+        state: "Maharashtra",
+        coordinates: [19.7645, 74.4669],
+        significance: "Samadhi of spiritual master Sai Baba",
+        description: "Famous temple and samadhi of Sai Baba, revered spiritual master who lived in Shirdi. Known for his philosophy of religious harmony and devotion.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Ram Navami",
+                date: "2025-04-06",
+                description: "Sai Baba's favorite festival",
+                rarity: "annual"
+            },
+            {
+                name: "Guru Purnima",
+                date: "2025-07-13",
+                description: "Day to honor spiritual teachers",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Visit Dwarkamai mosque where Sai Baba lived. Free meals available. Maintain silence in Samadhi Mandir.",
+        nearestAirport: "Shirdi Airport (1 km)",
+        nearestRailway: "Sainagar Shirdi Railway Station (2 km)",
+        photos: ["https://images.unsplash.com/photo-1590736969955-71cc94901144"]
+    },
+
+    {
+        id: 79,
+        name: "Kalighat Temple, Kolkata",
+        religion: "hindu",
+        state: "West Bengal",
+        coordinates: [22.5186, 88.3426],
+        significance: "One of 51 Shakti Peethas where Sati's toes fell",
+        description: "Ancient temple dedicated to Goddess Kali, one of the 51 Shakti Peethas. The name 'Calcutta' is derived from 'Kalighat'.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Kali Puja",
+                date: "2025-11-01",
+                description: "Major celebration of Goddess Kali",
+                rarity: "annual"
+            },
+            {
+                name: "Durga Puja",
+                date: "2025-10-09 to 2025-10-13",
+                description: "Grand festival of Divine Mother",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Early morning visit for shorter queues. Photography not allowed inside. Traditional Bengali sweets available nearby.",
+        nearestAirport: "Netaji Subhas Chandra Bose Airport (17 km)",
+        nearestRailway: "Kalighat Railway Station (1 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 80,
+        name: "Vindhyavasini Temple, Vindhyachal",
+        religion: "hindu",
+        state: "Uttar Pradesh",
+        coordinates: [25.0061, 82.5625],
+        significance: "One of 51 Shakti Peethas where Sati's lips fell",
+        description: "Sacred Shakti Peetha temple on Vindhya mountains. Part of the trinity with Ashtabhuja and Kalratri temples, representing three forms of Goddess.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Navratri",
+                date: "2025-03-30 to 2025-04-07",
+                description: "Nine nights of Goddess worship",
+                rarity: "annual"
+            },
+            {
+                name: "Durga Puja",
+                date: "2025-10-09 to 2025-10-13",
+                description: "Grand celebration of Divine Mother",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Visit all three temples in sequence. River Ganga flows nearby. Evening aarti is spiritually uplifting.",
+        nearestAirport: "Lal Bahadur Shastri Airport, Varanasi (80 km)",
+        nearestRailway: "Vindhyachal Railway Station (3 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 81,
+        name: "Chintpurni Temple",
+        religion: "hindu",
+        state: "Himachal Pradesh",
+        coordinates: [31.9725, 76.2708],
+        significance: "One of 51 Shakti Peethas where Sati's feet fell",
+        description: "Sacred Shakti Peetha temple dedicated to Goddess Chhinnamastika. Known for fulfilling devotees' wishes and removing worries (Chinta).",
+        bestTimeToVisit: "March to June, September to November",
+        bestMonths: [3, 4, 5, 6, 9, 10, 11],
+        festivals: [
+            {
+                name: "Navratri",
+                date: "2025-03-30 to 2025-04-07",
+                description: "Nine nights of Goddess worship",
+                rarity: "annual"
+            },
+            {
+                name: "Shravan Ashtami",
+                date: "2025-08-10",
+                description: "Special day for Goddess worship",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "No photography inside temple. Distribute prasad to devotees. Beautiful mountain scenery around.",
+        nearestAirport: "Chandigarh Airport (120 km)",
+        nearestRailway: "Una Himachal Railway Station (25 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    // Major Islamic Sites
+    {
+        id: 82,
+        name: "Haji Ali Dargah, Mumbai",
+        religion: "islam",
+        state: "Maharashtra",
+        coordinates: [18.9829, 72.8095],
+        significance: "Famous dargah accessible only during low tide",
+        description: "Sacred dargah of Muslim saint Haji Ali Shah Bukhari, located on a tiny island connected by a narrow causeway. Accessible only during low tide.",
+        bestTimeToVisit: "November to February",
+        bestMonths: [11, 12, 1, 2],
+        festivals: [
+            {
+                name: "Urs Festival",
+                date: "2025-12-15 to 2025-12-17",
+                description: "Annual celebration of saint's death anniversary",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Check tide timings before visiting. Removed shoes policy. Beautiful views of Mumbai skyline.",
+        nearestAirport: "Chhatrapati Shivaji International Airport (12 km)",
+        nearestRailway: "Mahalaxmi Railway Station (2 km)",
+        photos: ["https://images.unsplash.com/photo-1590736969955-71cc94901144"]
+    },
+
+    {
+        id: 83,
+        name: "Dargah Sharif, Ajmer",
+        religion: "islam",
+        state: "Rajasthan",
+        coordinates: [26.4556, 74.6261],
+        significance: "Shrine of Sufi saint Moinuddin Chishti",
+        description: "One of the most important pilgrimage sites for Muslims in South Asia. Tomb of revered Sufi saint Khwaja Moinuddin Chishti, visited by people of all faiths.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Urs Festival",
+                date: "2025-04-23 to 2025-04-29",
+                description: "Annual celebration of Khwaja's death anniversary",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Cover head before entering. Free food (langar) available. Best to visit during evening prayers.",
+        nearestAirport: "Jaipur Airport (135 km)",
+        nearestRailway: "Ajmer Junction (2 km)",
+        photos: ["https://images.unsplash.com/photo-1590736969955-71cc94901144"]
+    },
+
+    {
+        id: 84,
+        name: "Nizamuddin Dargah, Delhi",
+        religion: "islam",
+        state: "Delhi",
+        coordinates: [28.5935, 77.2507],
+        significance: "Shrine of Sufi saint Nizamuddin Auliya",
+        description: "Dargah of the famous 13th century Sufi saint Nizamuddin Auliya. Known for its spiritual atmosphere and qawwali performances on Thursday evenings.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Urs Festival",
+                date: "2025-04-15 to 2025-04-17",
+                description: "Annual celebration with qawwali",
+                rarity: "annual"
+            },
+            {
+                name: "Thursday Qawwali",
+                date: "Every Thursday evening",
+                description: "Traditional Sufi musical performances",
+                rarity: "weekly"
+            }
+        ],
+        travelTips: "Visit on Thursday evening for qawwali. Remove shoes before entering. Photography restrictions apply.",
+        nearestAirport: "Indira Gandhi International Airport (13 km)",
+        nearestRailway: "Nizamuddin Railway Station (1 km)",
+        photos: ["https://images.unsplash.com/photo-1590736969955-71cc94901144"]
+    },
+
+    {
+        id: 85,
+        name: "Jama Masjid, Old Delhi",
+        religion: "islam",
+        state: "Delhi",
+        coordinates: [28.6507, 77.2334],
+        significance: "Largest mosque in India built by Shah Jahan",
+        description: "One of the largest mosques in India, built by Mughal Emperor Shah Jahan. Its courtyard can accommodate 25,000 worshippers.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Eid ul-Fitr",
+                date: "2025-03-31",
+                description: "Celebration after Ramadan",
+                rarity: "annual"
+            },
+            {
+                name: "Eid ul-Adha",
+                date: "2025-06-07",
+                description: "Festival of sacrifice",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Dress modestly and cover head. Climb the minaret for city views. Photography allowed in courtyard.",
+        nearestAirport: "Indira Gandhi International Airport (20 km)",
+        nearestRailway: "Old Delhi Railway Station (2 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    // Major Buddhist Sites
+    {
+        id: 86,
+        name: "Bodh Gaya Temple",
+        religion: "buddhist",
+        state: "Bihar",
+        coordinates: [24.6958, 84.9917],
+        significance: "Place where Buddha attained enlightenment",
+        description: "Most sacred site in Buddhism where Prince Siddhartha attained enlightenment under the Bodhi tree and became Buddha.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Buddha Purnima",
+                date: "2025-05-12",
+                description: "Buddha's birthday and enlightenment day",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Meditate under the Bodhi tree. Visit early morning for peaceful atmosphere. Several international Buddhist temples nearby.",
+        nearestAirport: "Gaya Airport (12 km)",
+        nearestRailway: "Gaya Junction (17 km)",
+        photos: ["https://images.unsplash.com/photo-1590736969955-71cc94901144"]
+    },
+
+    {
+        id: 87,
+        name: "Sarnath",
+        religion: "buddhist",
+        state: "Uttar Pradesh",
+        coordinates: [25.3818, 83.0255],
+        significance: "Where Buddha gave his first sermon",
+        description: "Sacred Buddhist site where Buddha delivered his first sermon after attaining enlightenment. Home to the famous Lion Capital of Ashoka.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Buddha Purnima",
+                date: "2025-05-12",
+                description: "Celebration of Buddha's first sermon",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Visit the archaeological museum. See the Dhamek Stupa and ruins. Peaceful meditation gardens available.",
+        nearestAirport: "Lal Bahadur Shastri Airport, Varanasi (10 km)",
+        nearestRailway: "Varanasi Junction (13 km)",
+        photos: ["https://images.unsplash.com/photo-1590736969955-71cc94901144"]
+    },
+
+    // Major Jain Sites
+    {
+        id: 88,
+        name: "Palitana Temples",
+        religion: "jain",
+        state: "Gujarat",
+        coordinates: [21.5222, 71.8322],
+        significance: "Largest cluster of Jain temples on Shatrunjaya Hill",
+        description: "Sacred Jain pilgrimage site with over 900 temples on Shatrunjaya Hill. Considered the most sacred site for Svetambara Jains.",
+        bestTimeToVisit: "November to February",
+        bestMonths: [11, 12, 1, 2],
+        festivals: [
+            {
+                name: "Kartik Purnima",
+                date: "2025-11-15",
+                description: "Major Jain pilgrimage day",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Climb 3750 steps or take palanquin. No food allowed on hill. Start early morning. Overnight stay not permitted on hill.",
+        nearestAirport: "Bhavnagar Airport (51 km)",
+        nearestRailway: "Palitana Railway Station (5 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 89,
+        name: "Dilwara Temples, Mount Abu",
+        religion: "jain",
+        state: "Rajasthan",
+        coordinates: [24.5926, 72.7156],
+        significance: "Exquisite marble Jain temples with intricate carvings",
+        description: "Group of five stunning Jain temples built between 11th-13th centuries. Famous worldwide for their extraordinary marble architecture and intricate carvings.",
+        bestTimeToVisit: "November to February",
+        bestMonths: [11, 12, 1, 2],
+        festivals: [
+            {
+                name: "Mahavir Jayanti",
+                date: "2025-04-10",
+                description: "Birthday of 24th Tirthankara",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Photography not allowed inside. Dress modestly. Visit during cooler hours. Leather items not permitted.",
+        nearestAirport: "Udaipur Airport (185 km)",
+        nearestRailway: "Abu Road Railway Station (28 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
     }];
 
 // States list for filter dropdown
@@ -1858,13 +2529,13 @@ const states = [
 
 // Religion icons mapping
 const religionIcons = {
-    hindu: "🕉️",
-    buddhist: "☸️", 
+    hindu: "hindu.png",
+    buddhist: "buddhist.webp", 
     jain: "hamsa.png",
-    sikh: "☬",
-    christian: "✝️",
-    islamic: "☪️",
-    bahai: "bahai.png",
+    sikh: "sikh.svg",
+    christian: "christian.svg",
+    islam: "islam.png",
+    bahai: "bahai.webp",
     other: "🔯"
 };
 
