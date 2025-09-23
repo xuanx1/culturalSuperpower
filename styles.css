@@ -4,6 +4,37 @@
     box-sizing: border-box;
 }
 
+/* Custom thin minimalist scrollbar for all elements */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+::-webkit-scrollbar-corner {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/* Firefox scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.05);
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -64,6 +95,62 @@ body {
 .filters input:focus {
     border-color: #667eea;
     box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+}
+
+/* Search dropdown styles */
+.search-container {
+    position: relative;
+}
+
+.search-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    margin-top: 2px;
+}
+
+.search-dropdown-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s ease;
+}
+
+.search-dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+.search-dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.search-dropdown-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 2px;
+}
+
+.search-dropdown-details {
+    font-size: 12px;
+    color: #666;
+}
+
+.search-dropdown-religion {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: #888;
+    margin-top: 2px;
 }
 
 .countdown-btn {
@@ -698,4 +785,31 @@ body {
 .popup-btn:hover {
     transform: translateY(-1px);
     box-shadow: 0 3px 10px rgba(102, 126, 234, 0.4);
+}
+
+/* Icon circle styles */
+.icon-circle {
+    background-color: white !important;
+    border-radius: 50% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid #ddd !important;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.2) !important;
+    vertical-align: middle !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.icon-circle img {
+    border-radius: 50% !important;
+    object-fit: contain !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+}
+
+.icon-circle span {
+    line-height: 1 !important;
+    text-align: center !important;
+    display: block !important;
 }

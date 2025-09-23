@@ -49,11 +49,10 @@ function addMarkersToMap(sites) {
     allMarkers = [];
     
     sites.forEach(site => {
-        // Create custom icon based on religion
-        const iconColor = getReligionColor(site.religion);
+        // Create custom icon with neutral color
         const icon = L.divIcon({
             className: `custom-marker marker-${site.religion}`,
-            html: `<div style="background-color: ${iconColor}; width: 24px; height: 24px; border-radius: 50%; border: 2px solid white; display: flex; align-items: center; justify-content: center; font-size: 12px; box-sizing: border-box;">${religionIcons[site.religion]}</div>`,
+            html: `<div style="background-color: #ffffffff; width: 24px; height: 24px; border-radius: 50%; border: 2px solid white; display: flex; align-items: center; justify-content: center; font-size: 12px; box-sizing: border-box;">${renderIcon(site.religion, '16px', '', true)}</div>`,
             iconSize: [24, 24],
             iconAnchor: [12, 12]
         });
@@ -92,26 +91,57 @@ function createPopupContent(site) {
         <div class="popup-content">
             ${mainPhoto}
             <div class="popup-title">${site.name}</div>
-            <div class="popup-religion">${religionIcons[site.religion]} ${site.religion.charAt(0).toUpperCase() + site.religion.slice(1)} • ${site.state}</div>
+            <div class="popup-religion">${renderIcon(site.religion, '16px')} ${site.religion.charAt(0).toUpperCase() + site.religion.slice(1)} • ${site.state}</div>
             ${optimalStatus}
             <button class="popup-btn" onclick="showSiteDetails(${site.id})">View Details</button>
         </div>
     `;
 }
 
-// Get color for religion markers
-function getReligionColor(religion) {
-    const colors = {
-        hindu: '#ff6b35',
-        buddhist: '#ffd700',
-        jain: '#00ff00',
-        sikh: '#ff8c00',
-        christian: '#0066cc',
-        islamic: '#00aa00',
-        bahai: '#9966ff',
-        other: '#9966cc'
-    };
-    return colors[religion] || '#666666';
+// Helper function to render icon (emoji or image)
+function renderIcon(religion, size = '16px', className = '', forMarker = false) {
+    const iconValue = religionIcons[religion];
+    if (!iconValue) return '';
+    
+    if (forMarker) {
+        // For map markers, the icon should fit within the existing colored circle
+        if (iconValue.includes('.')) {
+            // Make image icons bigger to match emoji visual size
+            const imageSize = Math.min(parseInt(size) * 1.2, 16); // Bigger than emojis - max 16px
+            return `<img src="${iconValue}" alt="${religion} icon" style="width: ${imageSize}px; height: ${imageSize}px; object-fit: contain; border-radius: 50%;" class="${className}" onerror="this.style.display='none'">`;
+        } else {
+            // Make emoji bigger for map markers so they're visible
+            let markerEmojiSize = Math.min(parseInt(size) * 0.8, 12); // Bigger - max 12px for map markers
+            // Make Sikh icon slightly bigger
+            if (religion === 'sikh') {
+                markerEmojiSize = Math.min(parseInt(size) * 0.9, 14); // Slightly bigger for Sikh
+            }
+            return `<span style="font-size: ${markerEmojiSize}px;" class="${className}">${iconValue}</span>`;
+        }
+    } else {
+        // For other uses (sidebar, popups), add a white circular background for ALL icons
+        const baseSize = parseInt(size);
+        const circleSize = Math.max(24, baseSize + 8); // Ensure minimum circle size
+        const iconSize = Math.min(baseSize * 0.8, 12); // Same size as map markers - max 12px
+        
+        if (iconValue.includes('.')) {
+            // Image icon - make bigger to match emoji visual size
+            const imageIconSize = Math.min(baseSize * 1.2, 16); // Bigger than emojis - max 16px
+            return `<div class="icon-circle ${className}" style="width: ${circleSize}px; height: ${circleSize}px; min-width: ${circleSize}px; min-height: ${circleSize}px;">
+                        <img src="${iconValue}" alt="${religion} icon" style="width: ${imageIconSize}px; height: ${imageIconSize}px;" onerror="this.parentElement.style.display='none'">
+                    </div>`;
+        } else {
+            // Emoji icon - same size as map markers
+            let iconSize = Math.min(baseSize * 0.8, 12); // Same size as map markers - max 12px
+            // Make Sikh icon slightly bigger
+            if (religion === 'sikh') {
+                iconSize = Math.min(baseSize * 0.9, 14); // Slightly bigger for Sikh
+            }
+            return `<div class="icon-circle ${className}" style="width: ${circleSize}px; height: ${circleSize}px; min-width: ${circleSize}px; min-height: ${circleSize}px;">
+                        <span style="font-size: ${iconSize}px;">${iconValue}</span>
+                    </div>`;
+        }
+    }
 }
 
 // Show detailed site information in sidebar
@@ -158,7 +188,7 @@ function showSiteDetails(siteId) {
     
     content.innerHTML = `
         <div class="site-info">
-            <h2 class="site-title">${religionIcons[site.religion]} ${site.name}</h2>
+            <h2 class="site-title">${renderIcon(site.religion, '20px')} ${site.name}</h2>
             
             ${photoGallery}
             
@@ -246,8 +276,38 @@ function setupEventListeners() {
     // State filter
     document.getElementById('stateFilter').addEventListener('change', applyFilters);
     
-    // Search box
-    document.getElementById('searchBox').addEventListener('input', applyFilters);
+    // Search box with dropdown
+    const searchBox = document.getElementById('searchBox');
+    const searchDropdown = document.getElementById('searchDropdown');
+    
+    searchBox.addEventListener('input', function() {
+        const searchText = this.value.toLowerCase();
+        if (searchText.length >= 2) {
+            showSearchDropdown(searchText);
+        } else {
+            hideSearchDropdown();
+        }
+        applyFilters();
+    });
+    
+    searchBox.addEventListener('focus', function() {
+        const searchText = this.value.toLowerCase();
+        if (searchText.length >= 2) {
+            showSearchDropdown(searchText);
+        }
+    });
+    
+    searchBox.addEventListener('blur', function() {
+        // Delay hiding to allow click on dropdown items
+        setTimeout(() => hideSearchDropdown(), 200);
+    });
+    
+    // Click outside to close dropdown
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.search-container')) {
+            hideSearchDropdown();
+        }
+    });
     
     // Close sidebar
     document.getElementById('closeSidebar').addEventListener('click', function() {
@@ -281,6 +341,57 @@ function setupEventListeners() {
             photoModal.style.display = 'none';
         }
     });
+}
+
+// Search dropdown functions
+function showSearchDropdown(searchText) {
+    const dropdown = document.getElementById('searchDropdown');
+    const results = religiousSites.filter(site => 
+        site.name.toLowerCase().includes(searchText) ||
+        site.state.toLowerCase().includes(searchText) ||
+        site.significance.toLowerCase().includes(searchText) ||
+        site.description.toLowerCase().includes(searchText)
+    ).slice(0, 8); // Limit to 8 results
+    
+    if (results.length === 0) {
+        dropdown.style.display = 'none';
+        return;
+    }
+    
+    dropdown.innerHTML = results.map(site => `
+        <div class="search-dropdown-item" onclick="selectSearchResult(${site.id})">
+            <div class="search-dropdown-title">${site.name}</div>
+            <div class="search-dropdown-details">${site.state} • ${site.significance}</div>
+            <div class="search-dropdown-religion">${renderIcon(site.religion, '12px')} ${site.religion.charAt(0).toUpperCase() + site.religion.slice(1)}</div>
+        </div>
+    `).join('');
+    
+    dropdown.style.display = 'block';
+}
+
+function hideSearchDropdown() {
+    const dropdown = document.getElementById('searchDropdown');
+    dropdown.style.display = 'none';
+}
+
+function selectSearchResult(siteId) {
+    const site = religiousSites.find(s => s.id === siteId);
+    if (site) {
+        // Set search box value
+        document.getElementById('searchBox').value = site.name;
+        
+        // Hide dropdown
+        hideSearchDropdown();
+        
+        // Apply filters to show only this site
+        applyFilters();
+        
+        // Center map on the site
+        map.setView(site.coordinates, 12);
+        
+        // Show site details
+        showSiteDetails(site);
+    }
 }
 
 // Apply filters to map markers
@@ -343,7 +454,7 @@ function showCountdownModal() {
         const isRare = festival.rarity === 'every_144_years' || festival.rarity === 'every_12_years' || festival.rarity === 'every_6_years';
         return `
             <div class="countdown-item ${isRare ? 'rare-event' : ''}" onclick="showSiteDetails(${festival.siteId})">
-                <h4>${religionIcons[festival.religion]} ${festival.name}
+                <h4>${renderIcon(festival.religion, '16px')} ${festival.name}
                     ${festival.rarity ? `<span class="festival-rarity rarity-${festival.rarity}">${festival.rarity.replace(/_/g, ' ').toUpperCase()}</span>` : ''}
                 </h4>
                 <div class="location">${festival.siteName}, ${festival.siteState}</div>
@@ -408,3 +519,4 @@ window.showSiteDetails = showSiteDetails;
 window.showCountdownModal = showCountdownModal;
 window.openPhotoModal = openPhotoModal;
 window.switchMainPhoto = switchMainPhoto;
+window.selectSearchResult = selectSearchResult;
