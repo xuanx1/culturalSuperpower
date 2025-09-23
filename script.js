@@ -2,6 +2,7 @@
 let map;
 let allMarkers = [];
 let filteredSites = religiousSites;
+let contourPolygons = []; // Store contour polygon references for zoom control
 
 // Initialize the map when the page loads
 document.addEventListener('DOMContentLoaded', function() {
@@ -19,7 +20,7 @@ function initializeMap() {
     // Create map centered on India with tighter bounds
     map = L.map('map', {
         minZoom: 5,
-        maxZoom: 10,
+        maxZoom: 7,
         zoomControl: true,
         attributionControl: true
     }).setView([22.5937, 78.9629], 5);
@@ -37,17 +38,30 @@ function initializeMap() {
         map.panInsideBounds(indiaBounds, { animate: false });
     });
     
-    // Restrict zoom out to always show India properly
+    // Restrict zoom out to always show India properly and fade contours on zoom in
     map.on('zoomend', function() {
         if (map.getZoom() < 5) {
             map.setView([22.5937, 78.9629], 5);
         }
+        
+        // Fade contours when zoom level > 3
+        const currentZoom = map.getZoom();
+        const fadeOpacity = currentZoom > 3 ? Math.max(0.1, 1 - ((currentZoom - 3) * 0.3)) : 1;
+        
+        contourPolygons.forEach((polygon, index) => {
+            if (polygon) {
+                const originalOpacity = (index === 0) ? 0.4 : 0.8; // Same as creation logic
+                polygon.setStyle({
+                    opacity: originalOpacity * fadeOpacity
+                });
+            }
+        });
     });
     
     // Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetMap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
-        maxZoom: 10
+        maxZoom: 7
     }).addTo(map);
     
     // Load India administrative boundaries (states)
@@ -127,14 +141,14 @@ function loadIndiaStateBoundaries() {
         .then(geojsonData => {
             // Define 4 colors fading from purple (inner) to black (outer)
             const purpleToBlackShades = [
-                '#1a1a1a', // Near black (outermost ring)
-                '#4d1a4d', // Dark purple-black
-                '#6b2c6b', // Medium purple
-                '#8e44ad'  // Bright purple (innermost ring, near border)
+                '#2c2c2cff', // Near black (outermost ring)
+                '#3a183aff', // Dark purple-black
+                '#632d63ff', // Medium purple
+                '#753391ff'  // Bright purple (innermost ring, near border)
             ];
             
             // Create offset distances (in approximate degrees - rough buffer simulation)
-            const offsetDistances = [0.8, 0.6, 0.4, 0.2]; // Decreasing distances for inner rings
+            const offsetDistances = [1.2, 0.9, 0.6, 0.3]; // Decreasing distances for inner rings
             
             // Get India's coordinates from the GeoJSON
             const indiaFeature = geojsonData.features[0];
@@ -229,19 +243,28 @@ function loadIndiaStateBoundaries() {
             worldWithIndiaHole.addTo(map);
             
             // Create 4 offset contour rings (from outer to inner) ON TOP of mask
+            contourPolygons = []; // Clear any existing references
             for (let i = 0; i < 4; i++) {
                 const bufferedCoords = createOffsetContour(indiaCoords, offsetDistances[i]);
                 
                 // Set specific opacity for the outermost ring (#1a1a1a)
-                const ringOpacity = (i === 0) ? 0.2 : 0.8;
+                const baseOpacity = (i === 0) ? 0.4 : 0.8;
                 
-                L.polygon(bufferedCoords, {
+                // Apply initial fade based on current zoom level (same as zoom handler)
+                const currentZoom = map.getZoom();
+                const fadeOpacity = currentZoom > 3 ? Math.max(0.1, 1 - ((currentZoom - 3) * 0.3)) : 1;
+                const initialOpacity = baseOpacity * fadeOpacity;
+                
+                const contourPolygon = L.polygon(bufferedCoords, {
                     fillColor: 'transparent',
                     fillOpacity: 0,
                     weight: 3,
-                    opacity: ringOpacity,
+                    opacity: initialOpacity,
                     color: purpleToBlackShades[i]
                 }).addTo(map);
+                
+                // Store reference for zoom-based opacity control
+                contourPolygons.push(contourPolygon);
             }
             
             // Add the original India border on top with thick outline
