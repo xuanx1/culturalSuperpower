@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Religious Sites of India - Interactive Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-om"></i> Sacred Sites of India</h1>
+        <p>Discover India's spiritual heritage with optimal visit times and countdown timers</p>
+    </div>
+
+    <div class="controls">
+        <div class="filters">
+            <select id="religionFilter">
+                <option value="all">All Religions</option>
+                <option value="hindu">Hindu</option>
+                <option value="buddhist">Buddhist</option>
+                <option value="jain">Jain</option>
+                <option value="sikh">Sikh</option>
+                <option value="christian">Christian</option>
+                <option value="islamic">Islamic</option>
+                <option value="bahai">Bahá'í</option>
+                <option value="other">Other</option>
+            </select>
+            
+            <select id="stateFilter">
+                <option value="all">All States</option>
+            </select>
+            
+            <input type="text" id="searchBox" placeholder="Search religious sites...">
+            
+            <button id="showCountdowns" class="countdown-btn">
+                <i class="fas fa-clock"></i> Festival Countdowns
+            </button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div id="map"></div>
+        
+        <div id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h3>Site Information</h3>
+                <button id="closeSidebar">&times;</button>
+            </div>
+            <div id="sidebarContent" class="sidebar-content">
+                <p>Click on any marker to view detailed information about the religious site.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="countdownModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-calendar-alt"></i> Upcoming Festivals & Best Visit Times</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div id="countdownList" class="countdown-list">
+                <!-- Countdown timers will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Modal -->
+    <div id="photoModal" class="photo-modal">
+        <span class="photo-modal-close">&times;</span>
+        <img class="photo-modal-content" id="modalPhoto">
+        <div class="photo-modal-caption" id="modalCaption"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="religiousSites.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

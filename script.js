@@ -1,0 +1,410 @@
+// Global variables
+let map;
+let allMarkers = [];
+let filteredSites = religiousSites;
+
+// Initialize the map when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    initializeMap();
+    populateFilters();
+    setupEventListeners();
+    updateCountdowns();
+    
+    // Update countdowns every minute
+    setInterval(updateCountdowns, 60000);
+});
+
+// Initialize the Leaflet map
+function initializeMap() {
+    // Create map centered on South Asia (India)
+    map = L.map('map', {
+        minZoom: 4,
+        maxZoom: 18,
+        zoomControl: false  // Disable zoom controls
+    }).setView([20.5937, 78.9629], 5);
+    
+    // Set bounds to restrict view to South Asia
+    // Southwest corner: [5°N, 60°E] (southern Sri Lanka, western Pakistan)
+    // Northeast corner: [38°N, 98°E] (northern Afghanistan/Pakistan, eastern Bangladesh)
+    const southAsiaBounds = L.latLngBounds([5, 60], [38, 98]);
+    map.setMaxBounds(southAsiaBounds);
+    map.on('drag', function() {
+        map.panInsideBounds(southAsiaBounds, { animate: false });
+    });
+    
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetMap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 18
+    }).addTo(map);
+    
+    // Add all markers to the map
+    addMarkersToMap(religiousSites);
+}
+
+// Add markers for religious sites
+function addMarkersToMap(sites) {
+    // Clear existing markers
+    allMarkers.forEach(marker => map.removeLayer(marker));
+    allMarkers = [];
+    
+    sites.forEach(site => {
+        // Create custom icon based on religion
+        const iconColor = getReligionColor(site.religion);
+        const icon = L.divIcon({
+            className: `custom-marker marker-${site.religion}`,
+            html: `<div style="background-color: ${iconColor}; width: 24px; height: 24px; border-radius: 50%; border: 2px solid white; display: flex; align-items: center; justify-content: center; font-size: 12px; box-sizing: border-box;">${religionIcons[site.religion]}</div>`,
+            iconSize: [24, 24],
+            iconAnchor: [12, 12]
+        });
+        
+        // Create marker
+        const marker = L.marker(site.coordinates, { icon: icon });
+        
+        // Create popup content
+        const popupContent = createPopupContent(site);
+        marker.bindPopup(popupContent);
+        
+        // Add click event to show sidebar
+        marker.on('click', function() {
+            showSiteDetails(site);
+        });
+        
+        // Store site data with marker for filtering
+        marker.siteData = site;
+        
+        marker.addTo(map);
+        allMarkers.push(marker);
+    });
+}
+
+// Create popup content for markers
+function createPopupContent(site) {
+    const isOptimal = isOptimalTime(site.bestMonths);
+    const optimalStatus = isOptimal ? 
+        '<div style="color: green; font-weight: bold;">🌟 Great time to visit!</div>' : 
+        '<div style="color: orange; font-weight: bold;">⏰ Check best time to visit</div>';
+    
+    const mainPhoto = site.photos && site.photos.length > 0 ? 
+        `<img src="${site.photos[0].url}" alt="${site.name}" class="popup-photo" onerror="this.style.display='none'">` : '';
+    
+    return `
+        <div class="popup-content">
+            ${mainPhoto}
+            <div class="popup-title">${site.name}</div>
+            <div class="popup-religion">${religionIcons[site.religion]} ${site.religion.charAt(0).toUpperCase() + site.religion.slice(1)} • ${site.state}</div>
+            ${optimalStatus}
+            <button class="popup-btn" onclick="showSiteDetails(${site.id})">View Details</button>
+        </div>
+    `;
+}
+
+// Get color for religion markers
+function getReligionColor(religion) {
+    const colors = {
+        hindu: '#ff6b35',
+        buddhist: '#ffd700',
+        jain: '#00ff00',
+        sikh: '#ff8c00',
+        christian: '#0066cc',
+        islamic: '#00aa00',
+        bahai: '#9966ff',
+        other: '#9966cc'
+    };
+    return colors[religion] || '#666666';
+}
+
+// Show detailed site information in sidebar
+function showSiteDetails(siteId) {
+    const site = typeof siteId === 'object' ? siteId : religiousSites.find(s => s.id === siteId);
+    if (!site) return;
+    
+    const sidebar = document.getElementById('sidebar');
+    const content = document.getElementById('sidebarContent');
+    
+    const isOptimal = isOptimalTime(site.bestMonths);
+    const nextOptimal = isOptimal ? null : getNextOptimalTime(site.bestMonths);
+    
+    const upcomingFestivals = site.festivals
+        .map(festival => {
+            const countdown = calculateTimeUntil(festival.date);
+            return { ...festival, countdown };
+        })
+        .filter(festival => !festival.countdown.expired)
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
+    
+    // Create photo gallery if photos exist
+    const photoGallery = site.photos && site.photos.length > 0 ? `
+        <div class="photo-gallery">
+            <div class="photo-main" onclick="openPhotoModal('${site.photos[0].url}', '${site.photos[0].caption}')">
+                <img src="${site.photos[0].url}" alt="${site.name}" onerror="this.style.display='none'">
+                <div class="photo-caption">
+                    ${site.photos[0].caption}
+                    <div class="photo-credit">📷 ${site.photos[0].credit}</div>
+                </div>
+            </div>
+            ${site.photos.length > 1 ? `
+                <div class="photo-thumbnails">
+                    ${site.photos.map((photo, index) => `
+                        <div class="photo-thumb ${index === 0 ? 'active' : ''}" 
+                             onclick="switchMainPhoto(${index}, '${site.id}')">
+                            <img src="${photo.url}" alt="${photo.caption}" onerror="this.parentElement.style.display='none'">
+                        </div>
+                    `).join('')}
+                </div>
+            ` : ''}
+        </div>
+    ` : '';
+    
+    content.innerHTML = `
+        <div class="site-info">
+            <h2 class="site-title">${religionIcons[site.religion]} ${site.name}</h2>
+            
+            ${photoGallery}
+            
+            <div class="site-details">
+                <div class="detail-item">
+                    <div class="detail-label">Location</div>
+                    <div class="detail-value">${site.state}, India</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Religion</div>
+                    <div class="detail-value">${site.religion.charAt(0).toUpperCase() + site.religion.slice(1)}</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Significance</div>
+                    <div class="detail-value">${site.significance}</div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-label">Description</div>
+                    <div class="detail-value">${site.description}</div>
+                </div>
+            </div>
+            
+            <div class="best-time">
+                <h4>🌟 Best Time to Visit</h4>
+                <p>${site.bestTimeToVisit}</p>
+                ${isOptimal ? 
+                    '<div style="color: white; font-weight: bold;">Perfect time to visit now! 🎉</div>' : 
+                    `<div style="color: white;">Next optimal time: ${nextOptimal ? nextOptimal.message : 'Check calendar'}</div>`
+                }
+            </div>
+            
+            ${upcomingFestivals.length > 0 ? `
+                <div class="countdown-timer">
+                    <h4>🎊 Upcoming Festivals</h4>
+                    ${upcomingFestivals.slice(0, 3).map(festival => `
+                        <div style="margin-bottom: 15px; ${festival.rarity === 'every_144_years' || festival.rarity === 'every_12_years' ? 'border: 2px solid #ff6b35; border-radius: 8px; padding: 10px; background: rgba(255, 107, 53, 0.1);' : ''}">
+                            <strong>${festival.name}</strong>
+                            ${festival.rarity ? `<span class="festival-rarity rarity-${festival.rarity}">${festival.rarity.replace(/_/g, ' ').toUpperCase()}</span>` : ''}
+                            <br>
+                            <small>${festival.description}</small><br>
+                            ${festival.specialNote ? `<div class="special-note">⭐ ${festival.specialNote}</div>` : ''}
+                            <div style="background: rgba(255,255,255,0.2); padding: 8px; border-radius: 5px; margin-top: 8px;">
+                                ⏰ ${festival.countdown.message}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            ` : ''}
+            
+            <div class="detail-item">
+                <div class="detail-label">Travel Information</div>
+                <div class="detail-value">
+                    <strong>Nearest Airport:</strong> ${site.nearestAirport}<br>
+                    <strong>Nearest Railway:</strong> ${site.nearestRailway}<br><br>
+                    <strong>Travel Tips:</strong> ${site.travelTips}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    sidebar.classList.add('active');
+}
+
+// Populate filter dropdowns
+function populateFilters() {
+    const stateFilter = document.getElementById('stateFilter');
+    
+    // Add states to filter
+    states.forEach(state => {
+        const option = document.createElement('option');
+        option.value = state;
+        option.textContent = state;
+        stateFilter.appendChild(option);
+    });
+}
+
+// Setup event listeners
+function setupEventListeners() {
+    // Religion filter
+    document.getElementById('religionFilter').addEventListener('change', applyFilters);
+    
+    // State filter
+    document.getElementById('stateFilter').addEventListener('change', applyFilters);
+    
+    // Search box
+    document.getElementById('searchBox').addEventListener('input', applyFilters);
+    
+    // Close sidebar
+    document.getElementById('closeSidebar').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.remove('active');
+    });
+    
+    // Countdown modal
+    const countdownBtn = document.getElementById('showCountdowns');
+    const modal = document.getElementById('countdownModal');
+    const closeModal = modal.querySelector('.close');
+    
+    countdownBtn.addEventListener('click', showCountdownModal);
+    closeModal.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+    
+    // Photo modal
+    const photoModal = document.getElementById('photoModal');
+    const photoModalClose = photoModal.querySelector('.photo-modal-close');
+    
+    photoModalClose.addEventListener('click', function() {
+        photoModal.style.display = 'none';
+    });
+    
+    // Close modals when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+        if (event.target === photoModal) {
+            photoModal.style.display = 'none';
+        }
+    });
+}
+
+// Apply filters to map markers
+function applyFilters() {
+    const religionFilter = document.getElementById('religionFilter').value;
+    const stateFilter = document.getElementById('stateFilter').value;
+    const searchText = document.getElementById('searchBox').value.toLowerCase();
+    
+    filteredSites = religiousSites.filter(site => {
+        const matchesReligion = religionFilter === 'all' || site.religion === religionFilter;
+        const matchesState = stateFilter === 'all' || site.state === stateFilter;
+        const matchesSearch = searchText === '' || 
+            site.name.toLowerCase().includes(searchText) ||
+            site.state.toLowerCase().includes(searchText) ||
+            site.significance.toLowerCase().includes(searchText) ||
+            site.description.toLowerCase().includes(searchText);
+        
+        return matchesReligion && matchesState && matchesSearch;
+    });
+    
+    addMarkersToMap(filteredSites);
+    
+    // Update map view if filtered results are limited
+    if (filteredSites.length > 0 && filteredSites.length < religiousSites.length) {
+        const group = new L.featureGroup(allMarkers);
+        if (group.getBounds().isValid()) {
+            map.fitBounds(group.getBounds().pad(0.1));
+        }
+    }
+}
+
+// Show countdown modal with upcoming festivals
+function showCountdownModal() {
+    const modal = document.getElementById('countdownModal');
+    const countdownList = document.getElementById('countdownList');
+    
+    // Collect all upcoming festivals
+    const allFestivals = [];
+    filteredSites.forEach(site => {
+        site.festivals.forEach(festival => {
+            const countdown = calculateTimeUntil(festival.date);
+            if (!countdown.expired) {
+                allFestivals.push({
+                    ...festival,
+                    siteName: site.name,
+                    siteState: site.state,
+                    religion: site.religion,
+                    countdown: countdown,
+                    siteId: site.id
+                });
+            }
+        });
+    });
+    
+    // Sort by date
+    allFestivals.sort((a, b) => new Date(a.date) - new Date(b.date));
+    
+    // Create countdown items
+    countdownList.innerHTML = allFestivals.slice(0, 25).map(festival => {
+        const isRare = festival.rarity === 'every_144_years' || festival.rarity === 'every_12_years' || festival.rarity === 'every_6_years';
+        return `
+            <div class="countdown-item ${isRare ? 'rare-event' : ''}" onclick="showSiteDetails(${festival.siteId})">
+                <h4>${religionIcons[festival.religion]} ${festival.name}
+                    ${festival.rarity ? `<span class="festival-rarity rarity-${festival.rarity}">${festival.rarity.replace(/_/g, ' ').toUpperCase()}</span>` : ''}
+                </h4>
+                <div class="location">${festival.siteName}, ${festival.siteState}</div>
+                <p>${festival.description}</p>
+                ${festival.specialNote ? `<div class="special-note">⭐ ${festival.specialNote}</div>` : ''}
+                <div class="countdown-display">
+                    ⏰ ${festival.countdown.message}
+                    ${isRare ? ' 🌟' : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    modal.style.display = 'block';
+}
+
+// Photo gallery functions
+function openPhotoModal(imageUrl, caption) {
+    const modal = document.getElementById('photoModal');
+    const modalImg = document.getElementById('modalPhoto');
+    const modalCaption = document.getElementById('modalCaption');
+    
+    modal.style.display = 'block';
+    modalImg.src = imageUrl;
+    modalCaption.textContent = caption;
+}
+
+function switchMainPhoto(photoIndex, siteId) {
+    const site = religiousSites.find(s => s.id == siteId);
+    if (!site || !site.photos || !site.photos[photoIndex]) return;
+    
+    const mainPhoto = document.querySelector('.photo-main img');
+    const caption = document.querySelector('.photo-caption');
+    const credit = document.querySelector('.photo-credit');
+    const thumbnails = document.querySelectorAll('.photo-thumb');
+    
+    // Update main photo
+    mainPhoto.src = site.photos[photoIndex].url;
+    
+    // Update caption and credit
+    caption.childNodes[0].textContent = site.photos[photoIndex].caption;
+    credit.textContent = `📷 ${site.photos[photoIndex].credit}`;
+    
+    // Update thumbnail active state
+    thumbnails.forEach((thumb, index) => {
+        thumb.classList.toggle('active', index === photoIndex);
+    });
+    
+    // Update main photo click handler
+    document.querySelector('.photo-main').onclick = () => openPhotoModal(site.photos[photoIndex].url, site.photos[photoIndex].caption);
+}
+
+// Update all countdowns
+function updateCountdowns() {
+    // Update any visible countdowns in the page
+    const countdownElements = document.querySelectorAll('.countdown-display');
+    // This function can be expanded to update specific countdown displays
+}
+
+// Make functions globally available
+window.showSiteDetails = showSiteDetails;
+window.showCountdownModal = showCountdownModal;
+window.openPhotoModal = openPhotoModal;
+window.switchMainPhoto = switchMainPhoto;
