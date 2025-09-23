@@ -16,30 +16,174 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize the Leaflet map
 function initializeMap() {
-    // Create map centered on South Asia (India)
+    // Create map centered on India with tighter bounds
     map = L.map('map', {
-        minZoom: 4,
-        maxZoom: 18,
-        zoomControl: false  // Disable zoom controls
-    }).setView([20.5937, 78.9629], 5);
+        minZoom: 5,
+        maxZoom: 10,
+        zoomControl: true,
+        attributionControl: true
+    }).setView([22.5937, 78.9629], 5);
     
-    // Set bounds to restrict view to South Asia
-    // Southwest corner: [5°N, 60°E] (southern Sri Lanka, western Pakistan)
-    // Northeast corner: [38°N, 98°E] (northern Afghanistan/Pakistan, eastern Bangladesh)
-    const southAsiaBounds = L.latLngBounds([5, 60], [38, 98]);
-    map.setMaxBounds(southAsiaBounds);
+    // Define tighter bounds for India only
+    // Southwest corner: [6°N, 68°E] (Southern India, Western border)
+    // Northeast corner: [37°N, 97°E] (Northern India, Eastern border)
+    const indiaBounds = L.latLngBounds([6, 68], [37, 97]);
+    
+    // Set max bounds to restrict panning
+    map.setMaxBounds(indiaBounds);
+    
+    // Add padding to bounds to allow some movement but stay within India
     map.on('drag', function() {
-        map.panInsideBounds(southAsiaBounds, { animate: false });
+        map.panInsideBounds(indiaBounds, { animate: false });
+    });
+    
+    // Restrict zoom out to always show India properly
+    map.on('zoomend', function() {
+        if (map.getZoom() < 5) {
+            map.setView([22.5937, 78.9629], 5);
+        }
     });
     
     // Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetMap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
-        maxZoom: 18
+        maxZoom: 10
     }).addTo(map);
+    
+    // Load India administrative boundaries (states)
+    loadIndiaStateBoundaries();
     
     // Add all markers to the map
     addMarkersToMap(religiousSites);
+}
+
+// Load and display India state boundaries from GeoJSON
+function loadIndiaStateBoundaries() {
+    // Load state boundaries first
+    fetch('india-adm.geojson')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(geojsonData => {
+            // Add state boundaries GeoJSON layer to map
+            L.geoJSON(geojsonData, {
+                style: function(feature) {
+                    return {
+                        fillColor: 'transparent',
+                        weight: 1,
+                        opacity: 0.8,
+                        color: '#8e44ad',
+                        fillOpacity: 0.1
+                    };
+                },
+                onEachFeature: function(feature, layer) {
+                    // Add popup with state name if available
+                    if (feature.properties && feature.properties.NAME_1) {
+                        layer.bindPopup(`<strong>${feature.properties.NAME_1}</strong>`);
+                    } else if (feature.properties && feature.properties.name) {
+                        layer.bindPopup(`<strong>${feature.properties.name}</strong>`);
+                    }
+                    
+                    // Add hover effects
+                    layer.on({
+                        mouseover: function(e) {
+                            const layer = e.target;
+                            layer.setStyle({
+                                weight: 3,
+                                color: '#8e44ad',
+                                fillOpacity: 0.2
+                            });
+                        },
+                        mouseout: function(e) {
+                            const layer = e.target;
+                            layer.setStyle({
+                                weight: 1,
+                                color: '#8e44ad',
+                                fillOpacity: 0.1
+                            });
+                        }
+                    });
+                }
+            }).addTo(map);
+            
+            console.log('India state boundaries loaded successfully');
+        })
+        .catch(error => {
+            console.warn('Could not load India state boundaries:', error);
+            console.log('Make sure india-adm.geojson file is in the same directory as index.html');
+        });
+    
+    // Load India border for reverse mask effect
+    fetch('india-border.geojson')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(geojsonData => {
+            // Get India's coordinates from the GeoJSON
+            const indiaFeature = geojsonData.features[0];
+            let indiaCoords = [];
+            
+            // Handle different geometry types
+            if (indiaFeature.geometry.type === 'Polygon') {
+                indiaCoords = indiaFeature.geometry.coordinates[0].map(coord => [coord[1], coord[0]]);
+            } else if (indiaFeature.geometry.type === 'MultiPolygon') {
+                // Use the largest polygon (mainland India)
+                let largestPoly = indiaFeature.geometry.coordinates[0];
+                for (let poly of indiaFeature.geometry.coordinates) {
+                    if (poly[0].length > largestPoly[0].length) {
+                        largestPoly = poly;
+                    }
+                }
+                indiaCoords = largestPoly[0].map(coord => [coord[1], coord[0]]);
+            }
+            
+            // Create a world polygon with India as a hole (reverse mask)
+            const worldWithIndiaHole = L.polygon([
+                // Outer ring - covers the entire world
+                [
+                    [-90, -180],
+                    [90, -180], 
+                    [90, 180],
+                    [-90, 180],
+                    [-90, -180]
+                ],
+                // Inner ring (hole) - India's shape
+                indiaCoords
+            ], {
+                fillColor: 'black',
+                fillOpacity: 0.8,
+                weight: 0,
+                color: 'transparent'
+            });
+            
+            // Add the mask with hole to map
+            worldWithIndiaHole.addTo(map);
+            
+            // Add India border outline on top
+            L.geoJSON(geojsonData, {
+                style: function(feature) {
+                    return {
+                        fillColor: 'transparent',
+                        weight: 10,
+                        opacity: 1,
+                        color: '#8e44ad',
+                        fillOpacity: 0
+                    };
+                }
+            }).addTo(map);
+            
+            console.log('India reverse mask effect loaded successfully');
+        })
+        .catch(error => {
+            console.warn('Could not load India border for mask effect:', error);
+            console.log('Make sure india-border.geojson file is in the same directory as index.html');
+        });
 }
 
 // Add markers for religious sites
