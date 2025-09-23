@@ -488,8 +488,22 @@ function showCountdownModal() {
         });
     });
     
-    // Sort by date (earliest first)
-    allFestivals.sort((a, b) => new Date(a.date) - new Date(b.date));
+    // Sort by date (earliest first) - handle date ranges properly
+    allFestivals.sort((a, b) => {
+        // Parse dates the same way calculateTimeUntil does
+        let dateA = a.date;
+        let dateB = b.date;
+        
+        // Handle date ranges by using start date
+        if (typeof dateA === 'string' && dateA.includes(' to ')) {
+            dateA = dateA.split(' to ')[0].trim();
+        }
+        if (typeof dateB === 'string' && dateB.includes(' to ')) {
+            dateB = dateB.split(' to ')[0].trim();
+        }
+        
+        return new Date(dateA) - new Date(dateB);
+    });
     
     // Show all festivals
     const displayFestivals = allFestivals;

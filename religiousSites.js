@@ -2759,7 +2759,21 @@ const religionIcons = {
 // Function to calculate time until a specific date
 function calculateTimeUntil(targetDate) {
     const now = new Date();
-    const target = new Date(targetDate);
+    
+    // Handle date ranges (e.g., "2026-04-13 to 2026-04-21")
+    let dateToUse = targetDate;
+    if (typeof targetDate === 'string' && targetDate.includes(' to ')) {
+        // For date ranges, use the start date
+        dateToUse = targetDate.split(' to ')[0].trim();
+    }
+    
+    const target = new Date(dateToUse);
+    
+    // Check if the date is valid
+    if (isNaN(target.getTime())) {
+        return { expired: true, message: "Invalid date format" };
+    }
+    
     const timeDiff = target - now;
     
     if (timeDiff <= 0) {
