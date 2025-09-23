@@ -485,7 +485,7 @@ const religiousSites = [
             },
             {
                 name: "Eid Milad-un-Nabi",
-                date: "2025-09-05",
+                date: "2026-09-05",
                 description: "Birthday of Prophet Muhammad"
             }
         ],
@@ -687,7 +687,7 @@ const religiousSites = [
             },
             {
                 name: "Purna Kumbh Mela",
-                date: "2025-01-29",
+                date: "2026-01-29",
                 description: "Complete Kumbh Mela held every 12 years",
                 rarity: "every_12_years",
                 specialNote: "Major event attracting 50+ million pilgrims"
@@ -1194,7 +1194,7 @@ const religiousSites = [
         festivals: [
             {
                 name: "Feast of Our Lady of Good Health",
-                date: "2025-09-08",
+                date: "2026-09-08",
                 description: "Annual feast with grand processions",
                 rarity: "annual"
             },
@@ -1244,7 +1244,7 @@ const religiousSites = [
         festivals: [
             {
                 name: "Bandra Fair",
-                date: "2025-09-08",
+                date: "2026-09-08",
                 description: "Week-long festival celebrating Nativity of Mary",
                 rarity: "annual"
             }
@@ -1756,7 +1756,7 @@ const religiousSites = [
         festivals: [
             {
                 name: "Feast of Our Lady of Ransom",
-                date: "2025-09-24",
+                date: "2026-09-24",
                 description: "Annual feast with grand processions",
                 rarity: "annual"
             }
@@ -1860,7 +1860,7 @@ const religiousSites = [
         festivals: [
             {
                 name: "Amarnath Yatra",
-                date: "2025-07-01 to 2025-08-31",
+                date: "2026-07-01 to 2026-08-31",
                 description: "Annual pilgrimage to the holy cave",
                 rarity: "annual"
             }
@@ -1884,7 +1884,7 @@ const religiousSites = [
         festivals: [
             {
                 name: "Mahashivratri",
-                date: "2025-02-26",
+                date: "2026-02-26",
                 description: "Grand celebration with special rituals",
                 rarity: "annual"
             },
@@ -1914,7 +1914,7 @@ const religiousSites = [
         festivals: [
             {
                 name: "Mahashivratri",
-                date: "2025-02-26",
+                date: "2026-02-26",
                 description: "Special prayers and celebrations",
                 rarity: "annual"
             },
@@ -1974,19 +1974,19 @@ const religiousSites = [
         festivals: [
             {
                 name: "Janmashtami",
-                date: "2025-08-17",
+                date: "2026-08-17",
                 description: "Krishna's birthday celebration",
                 rarity: "annual"
             },
             {
                 name: "Holi Festival",
-                date: "2025-03-14",
+                date: "2026-03-14",
                 description: "Festival of colors at Krishna's birthplace",
                 rarity: "annual"
             },
             {
                 name: "Radhashtami",
-                date: "2025-09-01",
+                date: "2026-09-01",
                 description: "Radha's birthday celebration",
                 rarity: "annual"
             }
@@ -2040,7 +2040,7 @@ const religiousSites = [
         festivals: [
             {
                 name: "Mahashivratri",
-                date: "2025-02-26",
+                date: "2026-02-26",
                 description: "Grand celebration with thousands of devotees",
                 rarity: "annual"
             }
@@ -2064,7 +2064,7 @@ const religiousSites = [
         festivals: [
             {
                 name: "Mahashivratri",
-                date: "2025-02-26",
+                date: "2026-02-26",
                 description: "Special prayers and cultural programs",
                 rarity: "annual"
             }
@@ -2089,13 +2089,13 @@ const religiousSites = [
         festivals: [
             {
                 name: "Mahashivratri",
-                date: "2025-02-26",
+                date: "2026-02-26",
                 description: "Grand celebration with special rituals",
                 rarity: "annual"
             },
             {
                 name: "Brahmostava",
-                date: "2025-09-15 to 2025-09-24",
+                date: "2026-09-15 to 2026-09-24",
                 description: "Nine-day festival with processions",
                 rarity: "annual"
             }
@@ -2119,7 +2119,7 @@ const religiousSites = [
         festivals: [
             {
                 name: "Mahashivratri",
-                date: "2025-02-26",
+                date: "2026-02-26",
                 description: "Special prayers and celebrations",
                 rarity: "annual"
             }
@@ -2143,13 +2143,13 @@ const religiousSites = [
         festivals: [
             {
                 name: "Mahashivratri",
-                date: "2025-02-26",
+                date: "2026-02-26",
                 description: "Grand celebration with abhishekam",
                 rarity: "annual"
             },
             {
                 name: "Ram Navami",
-                date: "2025-04-06",
+                date: "2026-04-06",
                 description: "Lord Rama's birthday celebration",
                 rarity: "annual"
             }
@@ -2173,13 +2173,13 @@ const religiousSites = [
         festivals: [
             {
                 name: "Brahmotsavam",
-                date: "2025-09-12 to 2025-09-20",
+                date: "2026-09-12 to 2026-09-20",
                 description: "Nine-day grand festival with processions",
                 rarity: "annual"
             },
             {
                 name: "Vaikunta Ekadashi",
-                date: "2025-01-10",
+                date: "2026-01-10",
                 description: "Most auspicious day for darshan",
                 rarity: "annual"
             }
@@ -2203,13 +2203,13 @@ const religiousSites = [
         festivals: [
             {
                 name: "Ram Navami",
-                date: "2025-04-06",
+                date: "2026-04-06",
                 description: "Sai Baba's favorite festival",
                 rarity: "annual"
             },
             {
                 name: "Guru Purnima",
-                date: "2025-07-13",
+                date: "2026-07-13",
                 description: "Day to honor spiritual teachers",
                 rarity: "annual"
             }
@@ -2263,7 +2263,7 @@ const religiousSites = [
         festivals: [
             {
                 name: "Navratri",
-                date: "2025-03-30 to 2025-04-07",
+                date: "2026-03-30 to 2026-04-07",
                 description: "Nine nights of Goddess worship",
                 rarity: "annual"
             },
@@ -2293,13 +2293,13 @@ const religiousSites = [
         festivals: [
             {
                 name: "Navratri",
-                date: "2025-03-30 to 2025-04-07",
+                date: "2026-03-30 to 2026-04-07",
                 description: "Nine nights of Goddess worship",
                 rarity: "annual"
             },
             {
                 name: "Shravan Ashtami",
-                date: "2025-08-10",
+                date: "2026-08-10",
                 description: "Special day for Goddess worship",
                 rarity: "annual"
             }
@@ -2348,7 +2348,7 @@ const religiousSites = [
         festivals: [
             {
                 name: "Urs Festival",
-                date: "2025-04-23 to 2025-04-29",
+                date: "2026-04-23 to 2026-04-29",
                 description: "Annual celebration of Khwaja's death anniversary",
                 rarity: "annual"
             }
@@ -2372,7 +2372,7 @@ const religiousSites = [
         festivals: [
             {
                 name: "Urs Festival",
-                date: "2025-04-15 to 2025-04-17",
+                date: "2026-04-15 to 2026-04-17",
                 description: "Annual celebration with qawwali",
                 rarity: "annual"
             },
@@ -2402,13 +2402,13 @@ const religiousSites = [
         festivals: [
             {
                 name: "Eid ul-Fitr",
-                date: "2025-03-31",
+                date: "2026-03-31",
                 description: "Celebration after Ramadan",
                 rarity: "annual"
             },
             {
                 name: "Eid ul-Adha",
-                date: "2025-06-07",
+                date: "2026-06-07",
                 description: "Festival of sacrifice",
                 rarity: "annual"
             }
@@ -2433,7 +2433,7 @@ const religiousSites = [
         festivals: [
             {
                 name: "Buddha Purnima",
-                date: "2025-05-12",
+                date: "2026-05-12",
                 description: "Buddha's birthday and enlightenment day",
                 rarity: "annual"
             }
@@ -2457,7 +2457,7 @@ const religiousSites = [
         festivals: [
             {
                 name: "Buddha Purnima",
-                date: "2025-05-12",
+                date: "2026-05-12",
                 description: "Celebration of Buddha's first sermon",
                 rarity: "annual"
             }
@@ -2506,7 +2506,7 @@ const religiousSites = [
         festivals: [
             {
                 name: "Mahavir Jayanti",
-                date: "2025-04-10",
+                date: "2026-04-10",
                 description: "Birthday of 24th Tirthankara",
                 rarity: "annual"
             }
@@ -2514,6 +2514,223 @@ const religiousSites = [
         travelTips: "Photography not allowed inside. Dress modestly. Visit during cooler hours. Leather items not permitted.",
         nearestAirport: "Udaipur Airport (185 km)",
         nearestRailway: "Abu Road Railway Station (28 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    // Other Religious Sites (Zoroastrian, Jewish, Tribal, etc.)
+    {
+        id: 90,
+        name: "Udvada Atash Behram",
+        religion: "other",
+        state: "Gujarat",
+        coordinates: [20.0987, 72.7563],
+        significance: "Holiest Zoroastrian fire temple in India with 1000-year-old sacred fire",
+        description: "The most sacred Parsi fire temple in India, housing a fire that has been burning continuously for over 1000 years. One of only 8 Atash Behram temples worldwide.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Navroze (Parsi New Year)",
+                date: "2026-08-16",
+                description: "Zoroastrian New Year celebration",
+                rarity: "annual"
+            },
+            {
+                name: "Jashn-e-Tiragan",
+                date: "2026-07-13",
+                description: "Festival of water and rain",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Non-Parsis cannot enter the fire temple, but can visit the surrounding area. Respect the sacred nature of the site.",
+        nearestAirport: "Mumbai Airport (130 km)",
+        nearestRailway: "Udvada Railway Station (2 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 91,
+        name: "Magen David Synagogue, Mumbai",
+        religion: "other",
+        state: "Maharashtra",
+        coordinates: [18.9667, 72.8059],
+        significance: "Historic Jewish synagogue serving Mumbai's Bene Israel community",
+        description: "Beautiful 19th-century synagogue serving Mumbai's Jewish community. Features stunning stained glass windows and traditional Jewish architecture.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Rosh Hashanah",
+                date: "2026-09-05",
+                description: "Jewish New Year celebration",
+                rarity: "annual"
+            },
+            {
+                name: "Yom Kippur",
+                date: "2026-09-14",
+                description: "Day of Atonement",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Contact the community before visiting. Dress modestly. Guided tours available by appointment.",
+        nearestAirport: "Mumbai Airport (12 km)",
+        nearestRailway: "Mumbai Central (3 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 92,
+        name: "Knesset Eliyahoo Synagogue, Mumbai",
+        religion: "other",
+        state: "Maharashtra",
+        coordinates: [18.9389, 72.8317],
+        significance: "Orthodox Jewish synagogue built by Baghdadi Jews",
+        description: "Historic synagogue built in 1884 by the Baghdadi Jewish community. Features beautiful Indo-Saracenic architecture and serves as cultural center.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Passover",
+                date: "2026-04-13 to 2026-04-21",
+                description: "Festival of freedom and liberation",
+                rarity: "annual"
+            },
+            {
+                name: "Sukkot",
+                date: "2025-10-09 to 2025-10-16",
+                description: "Festival of Tabernacles",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "One of the few active synagogues in Mumbai. Services held on Saturdays. Beautiful architecture worth seeing.",
+        nearestAirport: "Mumbai Airport (8 km)",
+        nearestRailway: "Fort Railway Station (2 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 93,
+        name: "Paradesi Synagogue, Kochi",
+        religion: "other",
+        state: "Kerala",
+        coordinates: [9.9579, 76.2431],
+        significance: "Oldest active synagogue in Commonwealth of Nations",
+        description: "Built in 1568, this is the oldest active synagogue in the British Commonwealth. Features hand-painted Chinese tiles and Belgian glass chandeliers.",
+        bestTimeToVisit: "October to February",
+        bestMonths: [10, 11, 12, 1, 2],
+        festivals: [
+            {
+                name: "Simchat Torah",
+                date: "2025-10-24",
+                description: "Rejoicing with the Torah",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Part of Kochi's Jewish heritage. Museum attached. Photography allowed in courtyard only. Closed on Fridays and Saturdays.",
+        nearestAirport: "Kochi Airport (40 km)",
+        nearestRailway: "Ernakulam Junction (13 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 94,
+        name: "Jagannath Temple, Puri (Tribal Heritage)",
+        religion: "other",
+        state: "Odisha",
+        coordinates: [19.8048, 85.8182],
+        significance: "Ancient tribal worship site later adopted into Hinduism",
+        description: "Originally a tribal deity worship site, Jagannath represents the synthesis of tribal and Vedic traditions. The unique wooden deities reflect ancient tribal craftsmanship.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Rath Yatra (Tribal Origins)",
+                date: "2026-07-06",
+                description: "Festival with roots in tribal chariot traditions",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Focus on the tribal cultural aspects and indigenous craft traditions. Visit the handicraft markets for tribal art.",
+        nearestAirport: "Bhubaneswar Airport (60 km)",
+        nearestRailway: "Puri Railway Station (2 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 95,
+        name: "Donyi-Polo Temple, Itanagar",
+        religion: "other",
+        state: "Arunachal Pradesh",
+        coordinates: [27.0844, 93.6053],
+        significance: "Major tribal religious site dedicated to Sun and Moon worship",
+        description: "Sacred site of the Donyi-Polo faith, the indigenous religion of Arunachal Pradesh tribes. Represents Sun (Donyi) and Moon (Polo) worship.",
+        bestTimeToVisit: "October to April",
+        bestMonths: [10, 11, 12, 1, 2, 3, 4],
+        festivals: [
+            {
+                name: "Solung Festival",
+                date: "2026-09-01 to 2026-09-03",
+                description: "Major tribal harvest festival",
+                rarity: "annual"
+            },
+            {
+                name: "Mopin Festival",
+                date: "2026-04-05",
+                description: "Spring festival of prosperity",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Experience authentic tribal culture and traditions. Local guides recommended. Respect indigenous customs.",
+        nearestAirport: "Lilabari Airport, Assam (67 km)",
+        nearestRailway: "Harmuti Railway Station, Assam (33 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 96,
+        name: "Tawang Monastery (Bon Influence)",
+        religion: "other",
+        state: "Arunachal Pradesh",
+        coordinates: [27.5860, 91.8590],
+        significance: "Buddhist monastery with strong Bon (indigenous Tibetan) influences",
+        description: "While primarily Buddhist, this monastery preserves many elements of the ancient Bon religion, the indigenous faith of Tibet before Buddhism.",
+        bestTimeToVisit: "March to October",
+        bestMonths: [3, 4, 5, 6, 7, 8, 9, 10],
+        festivals: [
+            {
+                name: "Torgya Festival",
+                date: "2026-01-08 to 2026-01-10",
+                description: "Monastic festival with Bon ritual elements",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "High altitude location. Permits required for foreigners. Rich blend of Buddhist and ancient Bon traditions.",
+        nearestAirport: "Tezpur Airport (320 km)",
+        nearestRailway: "Rangapara North (183 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 97,
+        name: "Sacred Grove of Mawphlang",
+        religion: "other",
+        state: "Meghalaya",
+        coordinates: [25.5630, 91.7500],
+        significance: "Sacred forest preserved by Khasi tribal traditions",
+        description: "Ancient sacred grove protected by indigenous Khasi beliefs and traditions. Represents the harmony between tribal spirituality and nature conservation.",
+        bestTimeToVisit: "October to April",
+        bestMonths: [10, 11, 12, 1, 2, 3, 4],
+        festivals: [
+            {
+                name: "Shad Suk Mynsiem",
+                date: "2026-04-15 to 2026-04-17",
+                description: "Khasi tribal thanksgiving festival",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Guided tours by local Khasi guides only. No removal of any plant or stone allowed. Sacred site with strict traditional protocols.",
+        nearestAirport: "Shillong Airport (25 km)",
+        nearestRailway: "Guwahati Railway Station (100 km)",
         photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
     }];
 

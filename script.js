@@ -257,7 +257,7 @@ function showSiteDetailsModal(siteId) {
             ${upcomingFestivals.length > 0 ? `
                 <div class="countdown-timer">
                     <h4>🎊 Upcoming Festivals</h4>
-                    ${upcomingFestivals.slice(0, 3).map(festival => `
+                    ${upcomingFestivals.map(festival => `
                         <div style="margin-bottom: 15px; ${festival.rarity === 'every_144_years' || festival.rarity === 'every_12_years' ? 'border: 2px solid #ff6b35; border-radius: 8px; padding: 10px; background: rgba(255, 107, 53, 0.1);' : ''}">
                             <strong>${festival.name}</strong>
                             ${festival.rarity ? `<span class="festival-rarity rarity-${festival.rarity}">${festival.rarity.replace(/_/g, ' ').toUpperCase()}</span>` : ''}
@@ -488,11 +488,14 @@ function showCountdownModal() {
         });
     });
     
-    // Sort by date
+    // Sort by date (earliest first)
     allFestivals.sort((a, b) => new Date(a.date) - new Date(b.date));
     
+    // Show all festivals
+    const displayFestivals = allFestivals;
+    
     // Create countdown items
-    countdownList.innerHTML = allFestivals.slice(0, 25).map(festival => {
+    countdownList.innerHTML = displayFestivals.map(festival => {
         const isRare = festival.rarity === 'every_144_years' || festival.rarity === 'every_12_years' || festival.rarity === 'every_6_years';
         return `
             <div class="countdown-item ${isRare ? 'rare-event' : ''}" onclick="showSiteDetails(${festival.siteId})">
