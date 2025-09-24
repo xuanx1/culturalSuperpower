@@ -874,6 +874,44 @@ function applyFilters() {
     }
 }
 
+// Helper function to create structured countdown display like the next festival overlay
+function createStructuredCountdown(countdown) {
+    // Parse the countdown message to extract days, hours, minutes, seconds
+    const message = countdown.message;
+    
+    // Try to extract numbers from the message
+    const dayMatch = message.match(/(\d+)\s*days?/i);
+    const hourMatch = message.match(/(\d+)\s*hours?/i);
+    const minuteMatch = message.match(/(\d+)\s*minutes?/i);
+    const secondMatch = message.match(/(\d+)\s*seconds?/i);
+    
+    const days = dayMatch ? parseInt(dayMatch[1]) : 0;
+    const hours = hourMatch ? parseInt(hourMatch[1]) : 0;
+    const minutes = minuteMatch ? parseInt(minuteMatch[1]) : 0;
+    const seconds = secondMatch ? parseInt(secondMatch[1]) : 0;
+    
+    return `
+        <div class="countdown-structured">
+            <div class="countdown-unit">
+                <div class="unit">${String(days).padStart(3, '0')}</div>
+                <div class="label">Days</div>
+            </div>
+            <div class="countdown-unit">
+                <div class="unit">${String(hours).padStart(2, '0')}</div>
+                <div class="label">Hours</div>
+            </div>
+            <div class="countdown-unit">
+                <div class="unit">${String(minutes).padStart(2, '0')}</div>
+                <div class="label">Minutes</div>
+            </div>
+            <div class="countdown-unit">
+                <div class="unit">${String(seconds).padStart(2, '0')}</div>
+                <div class="label">Seconds</div>
+            </div>
+        </div>
+    `;
+}
+
 // Show countdown modal with upcoming festivals
 function showCountdownModal() {
     const modal = document.getElementById('countdownModal');
@@ -936,9 +974,9 @@ function showCountdownModal() {
                         <div class="location">${festival.siteName}, ${festival.siteState}</div>
                         <p>${festival.description}</p>
                         ${festival.specialNote ? `<div class="special-note">⭐ ${festival.specialNote}</div>` : ''}
-                        <div class="countdown-display">
-                            ⏰ ${festival.countdown.message}
-                            ${isRare ? ' 🌟' : ''}
+                        <div class="countdown-display-structured">
+                            ${createStructuredCountdown(festival.countdown)}
+                            ${isRare ? '<div class="rare-indicator">🌟 RARE EVENT</div>' : ''}
                         </div>
                     </div>
                     ${imagePath ? `

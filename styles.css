@@ -370,6 +370,53 @@ body {
     margin-top: 10px;
 }
 
+.countdown-display-structured {
+    margin-top: 15px;
+}
+
+.countdown-structured {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.countdown-unit {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px 10px;
+    border-radius: 8px;
+    min-width: 45px;
+    text-align: center;
+}
+
+.countdown-unit .unit {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e6eef8;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 6px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+}
+
+.countdown-unit .label {
+    font-size: 10px;
+    color: #9aa8c3;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.rare-indicator {
+    background: linear-gradient(90deg, rgba(255,107,53,0.8), rgba(247,147,30,0.8));
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-top: 8px;
+    display: inline-block;
+}
+
 .religion-icon {
     width: 20px;
     height: 20px;
