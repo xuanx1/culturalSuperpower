@@ -378,15 +378,14 @@ function addMarkersToMap(sites) {
 function createHoverPopupContent(site) {
     const isOptimal = isOptimalTime(site.bestMonths);
     const optimalStatus = isOptimal ? 
-        '<div style="color: green; font-weight: bold; font-size: 0.85em;">🌟 Great time to visit!</div>' : 
-        '<div style="color: orange; font-weight: bold; font-size: 0.85em;">⏰ Check best time to visit</div>';
+        '<div style="color: green; font-weight: bold; font-size: 0.85em;">Great time to visit!</div>' : 
+        '<div style="color: orange; font-weight: bold; font-size: 0.85em;">Check best time to visit</div>';
     
     return `
         <div class="hover-popup-content">
             <div class="popup-title" style="font-size: 1.1em; margin-bottom: 5px;">${site.name}</div>
             <div class="popup-religion" style="font-size: 0.9em; margin-bottom: 8px;">${renderIcon(site.religion, '14px')} ${site.religion.charAt(0).toUpperCase() + site.religion.slice(1)} • ${site.state}</div>
             ${optimalStatus}
-            <div style="margin-top: 8px; font-size: 0.8em; color: #666;">Click for details</div>
         </div>
     `;
 }
@@ -462,15 +461,24 @@ function renderIcon(religion, size = '16px', className = '', forMarker = false) 
 function getSiteImagePath(siteName) {
     // Map of site names to their corresponding image files
     const imageMap = {
+        // Main temple mappings
+        'Amarnath Cave Temple': 'Amarnath-Cave-Temple.jpg',
         'Golden Temple (Harmandir Sahib)': 'Golden-Temple-Amritsar.jpg',
+        'Kashi Vishwanath Temple, Varanasi': 'Kashi-Vishwanath-Temple.jpg',
         'Kedarnath Temple': 'Kedarnath-Temple.jpg',
         'Meenakshi Temple, Madurai': 'Meenakshi-Temple.jpg',
         'Madurai Meenakshi Temple': 'Meenakshi-Temple.jpg',
+        'Sabarimala Temple': 'Sabarimala-Ayyappa-Temple.jpg',
         'Somnath Temple': 'Shree-Somnath-Temple.jpg',
-        'Shri Kalkaji Mandir': 'Shri-Kalkaji-Mandir.jpg',
+        'Jagannath Temple, Puri': 'Shri-Jagannath-Temple.jpg',
+        'Shirdi Sai Baba Temple': 'Shri-Shirdi-Sai-Baba-Temple.jpg',
         'Tirupati Balaji Temple': 'tirupati-bala-ji-temple.webp',
         'Venkateswara Temple, Tirumala': 'tirupati-bala-ji-temple.webp',
-        'Vaishno Devi Temple': 'vaishno-devi-mandir.jpg'
+        'Vaishno Devi Temple': 'vaishno-devi-mandir.jpg',
+        
+        // Alternative names and variations
+        'Rameshwaram Temple': 'Sabarimala-Ayyappa-Temple.jpg', // Using closest available image
+        'Rameswaram Temple': 'Sabarimala-Ayyappa-Temple.jpg'   // Using closest available image
     };
     
     return imageMap[siteName] ? `img/${imageMap[siteName]}` : null;

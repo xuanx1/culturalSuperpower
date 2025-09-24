@@ -575,32 +575,7 @@ const religiousSites = [
         nearestAirport: "Lal Bahadur Shastri Airport (25 km)",
         nearestRailway: "Varanasi Junction (5 km)"
     },
-    {
-        id: 18,
-        name: "Meenakshi Temple, Madurai",
-        religion: "hindu",
-        state: "Tamil Nadu",
-        coordinates: [9.9195, 78.1194],
-        significance: "Historic temple dedicated to Goddess Meenakshi and Lord Sundareshwar",
-        description: "A historic Hindu temple with stunning Dravidian architecture, featuring 14 colorful gopurams (towers) and intricate sculptures.",
-        bestTimeToVisit: "October to March",
-        bestMonths: [10, 11, 12, 1, 2, 3],
-        festivals: [
-            {
-                name: "Meenakshi Thirukalyanam",
-                date: "2026-04-25",
-                description: "Annual celebration of the divine marriage of Meenakshi and Sundareshwar"
-            },
-            {
-                name: "Float Festival",
-                date: "2026-01-20",
-                description: "Beautiful festival with deities on decorated floats"
-            }
-        ],
-        travelTips: "Temple is open from 5 AM to 12:30 PM and 4 PM to 9:30 PM. Don't miss the evening prayer ceremony.",
-        nearestAirport: "Madurai Airport (12 km)",
-        nearestRailway: "Madurai Junction (2 km)"
-    },
+
     {
         id: 19,
         name: "Sun Temple, Konark",
@@ -1574,34 +1549,6 @@ const religiousSites = [
 
     // More Jain Sites
     {
-        id: 55,
-        name: "Mount Abu Dilwara Temples",
-        religion: "jain",
-        state: "Rajasthan",
-        coordinates: [24.5925, 72.7156],
-        significance: "Five marble temples with exquisite architecture",
-        description: "Group of five marble temples built between 11th-13th centuries, renowned for their stunning use of marble and intricate carvings. Considered architectural marvels.",
-        bestTimeToVisit: "November to March",
-        bestMonths: [11, 12, 1, 2, 3],
-        festivals: [
-            {
-                name: "Mahavir Jayanti",
-                date: "2026-04-06",
-                description: "Birthday celebration of Lord Mahavira",
-                rarity: "annual"
-            },
-            {
-                name: "Paryushan Parva",
-                date: "2026-08-29",
-                description: "Most important Jain festival",
-                rarity: "annual"
-            }
-        ],
-        travelTips: "Vimal Vasahi and Luna Vasahi temples are most famous. Photography restricted inside temples.",
-        nearestAirport: "Udaipur Airport (185 km)",
-        nearestRailway: "Abu Road Railway Station (27 km)"
-    },
-    {
         id: 56,
         name: "Parasnath Hill Temple",
         religion: "jain",
@@ -1816,34 +1763,6 @@ const religiousSites = [
         travelTips: "Visit Guru ka Mahal where Guru Gobind Singh lived. Beautiful gurdwara architecture.",
         nearestAirport: "Bathinda Airport (15 km)",
         nearestRailway: "Talwandi Sabo Railway Station (2 km)"
-    },
-    {
-        id: 65,
-        name: "Gurdwara Bangla Sahib",
-        religion: "sikh",
-        state: "Delhi",
-        coordinates: [28.6262, 77.2088],
-        significance: "Historic gurdwara associated with Guru Har Krishan",
-        description: "One of the most prominent Sikh gurdwaras in Delhi, known for its golden dome and sarovar (holy pond). Famous for serving free meals to thousands daily.",
-        bestTimeToVisit: "October to March",
-        bestMonths: [10, 11, 12, 1, 2, 3],
-        festivals: [
-            {
-                name: "Guru Nanak Jayanti",
-                date: "2025-11-15",
-                description: "Birthday celebration of first Guru",
-                rarity: "annual"
-            },
-            {
-                name: "Guru Har Krishan Jayanti",
-                date: "2026-07-23",
-                description: "Birthday of eighth Guru",
-                rarity: "annual"
-            }
-        ],
-        travelTips: "Experience langar (free community kitchen). Beautiful reflection of golden dome in sarovar.",
-        nearestAirport: "Indira Gandhi International Airport (15 km)",
-        nearestRailway: "New Delhi Railway Station (3 km)"
     },
 
     // Missing Major Hindu Sites
@@ -2161,66 +2080,6 @@ const religiousSites = [
     },
 
     {
-        id: 77,
-        name: "Tirupati Balaji Temple",
-        religion: "hindu",
-        state: "Andhra Pradesh",
-        coordinates: [13.6837, 79.3472],
-        significance: "Richest temple dedicated to Lord Venkateswara",
-        description: "Most visited and richest temple in the world dedicated to Lord Venkateswara (Vishnu). Located on Tirumala Hills, it receives millions of devotees annually.",
-        bestTimeToVisit: "September to February",
-        bestMonths: [9, 10, 11, 12, 1, 2],
-        festivals: [
-            {
-                name: "Brahmotsavam",
-                date: "2026-09-12 to 2026-09-20",
-                description: "Nine-day grand festival with processions",
-                rarity: "annual"
-            },
-            {
-                name: "Vaikunta Ekadashi",
-                date: "2026-01-10",
-                description: "Most auspicious day for darshan",
-                rarity: "annual"
-            }
-        ],
-        travelTips: "Book darshan tickets online in advance. Free meals available. Hair donation tradition for devotees.",
-        nearestAirport: "Tirupati Airport (15 km)",
-        nearestRailway: "Tirupati Railway Station (20 km)",
-        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
-    },
-
-    {
-        id: 78,
-        name: "Shirdi Sai Baba Temple",
-        religion: "hindu",
-        state: "Maharashtra",
-        coordinates: [19.7645, 74.4669],
-        significance: "Samadhi of spiritual master Sai Baba",
-        description: "Famous temple and samadhi of Sai Baba, revered spiritual master who lived in Shirdi. Known for his philosophy of religious harmony and devotion.",
-        bestTimeToVisit: "October to March",
-        bestMonths: [10, 11, 12, 1, 2, 3],
-        festivals: [
-            {
-                name: "Ram Navami",
-                date: "2026-04-06",
-                description: "Sai Baba's favorite festival",
-                rarity: "annual"
-            },
-            {
-                name: "Guru Purnima",
-                date: "2026-07-13",
-                description: "Day to honor spiritual teachers",
-                rarity: "annual"
-            }
-        ],
-        travelTips: "Visit Dwarkamai mosque where Sai Baba lived. Free meals available. Maintain silence in Samadhi Mandir.",
-        nearestAirport: "Shirdi Airport (1 km)",
-        nearestRailway: "Sainagar Shirdi Railway Station (2 km)",
-        photos: ["https://images.unsplash.com/photo-1590736969955-71cc94901144"]
-    },
-
-    {
         id: 79,
         name: "Kalighat Temple, Kolkata",
         religion: "hindu",
@@ -2466,55 +2325,6 @@ const religiousSites = [
         nearestAirport: "Lal Bahadur Shastri Airport, Varanasi (10 km)",
         nearestRailway: "Varanasi Junction (13 km)",
         photos: ["https://images.unsplash.com/photo-1590736969955-71cc94901144"]
-    },
-
-    // Major Jain Sites
-    {
-        id: 88,
-        name: "Palitana Temples",
-        religion: "jain",
-        state: "Gujarat",
-        coordinates: [21.5222, 71.8322],
-        significance: "Largest cluster of Jain temples on Shatrunjaya Hill",
-        description: "Sacred Jain pilgrimage site with over 900 temples on Shatrunjaya Hill. Considered the most sacred site for Svetambara Jains.",
-        bestTimeToVisit: "November to February",
-        bestMonths: [11, 12, 1, 2],
-        festivals: [
-            {
-                name: "Kartik Purnima",
-                date: "2025-11-15",
-                description: "Major Jain pilgrimage day",
-                rarity: "annual"
-            }
-        ],
-        travelTips: "Climb 3750 steps or take palanquin. No food allowed on hill. Start early morning. Overnight stay not permitted on hill.",
-        nearestAirport: "Bhavnagar Airport (51 km)",
-        nearestRailway: "Palitana Railway Station (5 km)",
-        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
-    },
-
-    {
-        id: 89,
-        name: "Dilwara Temples, Mount Abu",
-        religion: "jain",
-        state: "Rajasthan",
-        coordinates: [24.5926, 72.7156],
-        significance: "Exquisite marble Jain temples with intricate carvings",
-        description: "Group of five stunning Jain temples built between 11th-13th centuries. Famous worldwide for their extraordinary marble architecture and intricate carvings.",
-        bestTimeToVisit: "November to February",
-        bestMonths: [11, 12, 1, 2],
-        festivals: [
-            {
-                name: "Mahavir Jayanti",
-                date: "2026-04-10",
-                description: "Birthday of 24th Tirthankara",
-                rarity: "annual"
-            }
-        ],
-        travelTips: "Photography not allowed inside. Dress modestly. Visit during cooler hours. Leather items not permitted.",
-        nearestAirport: "Udaipur Airport (185 km)",
-        nearestRailway: "Abu Road Railway Station (28 km)",
-        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
     },
 
     // Other Religious Sites (Zoroastrian, Jewish, Tribal, etc.)
