@@ -513,62 +513,64 @@ function showSiteDetailsModal(siteId) {
             ${photoDisplay}
             
             <div class="site-details">
-                <div class="detail-item">
-                    <div class="detail-label">Location</div>
-                    <div class="detail-value">${site.state}, India</div>
+                <div class="location-religion-container">
+                    <div class="detail-item compact">
+                        <div class="detail-label">Location</div>
+                        <div class="detail-value">${site.state}, India</div>
+                    </div>
+                    
+                    <div class="detail-item compact">
+                        <div class="detail-label">Religion</div>
+                        <div class="detail-value">${site.religion.charAt(0).toUpperCase() + site.religion.slice(1)}</div>
+                    </div>
                 </div>
                 
-                <div class="detail-item">
-                    <div class="detail-label">Religion</div>
-                    <div class="detail-value">${site.religion.charAt(0).toUpperCase() + site.religion.slice(1)}</div>
-                </div>
-                
-                <div class="detail-item">
-                    <div class="detail-label">Significance</div>
-                    <div class="detail-value">${site.significance}</div>
-                </div>
-                
-                <div class="detail-item">
+                <div class="detail-item compact">
                     <div class="detail-label">Description</div>
-                    <div class="detail-value">${site.description}</div>
+                    <div class="detail-value">
+                        ${site.significance}.
+                        ${site.description}
+                    </div>
                 </div>
-            </div>
-            
-            <div class="best-time">
-                <h4>🌟 Best Time to Visit</h4>
-                <p>${site.bestTimeToVisit}</p>
-                ${isOptimal ? 
-                    '<div style="color: white; font-weight: bold;">Perfect time to visit now! 🎉</div>' : 
-                    `<div style="color: white;">Next optimal time: ${nextOptimal ? nextOptimal.message : 'Check calendar'}</div>`
-                }
+                
+                <div class="detail-item compact">
+                    <div class="detail-label">Travel Information</div>
+                    <div class="detail-value">
+                        <div class="transport-box">✈️ ${site.nearestAirport}</div>
+                        <div class="transport-box">🚂 ${site.nearestRailway}</div>
+                        <br><br>
+                        ${site.travelTips}
+                        The best time to visit is ${site.bestTimeToVisit} which is in
+                        ${isOptimal ? 
+                            '<span style="color: #4CAF50; font-weight: bold;">Perfect time to visit now! 🎉</span>' : 
+                            `<span style="color: #FF9800;">${nextOptimal ? nextOptimal.message : 'Check calendar'}.</span>`
+                        }
+                    </div>
+                </div>
             </div>
             
             ${upcomingFestivals.length > 0 ? `
-                <div class="countdown-timer">
+                <div class="countdown-timer festivals-narrow">
                     <h4>🎊 Upcoming Festivals</h4>
                     ${upcomingFestivals.map(festival => `
-                        <div style="margin-bottom: 15px; ${festival.rarity === 'every_144_years' || festival.rarity === 'every_12_years' ? 'border: 2px solid #ff6b35; border-radius: 8px; padding: 10px; background: rgba(255, 107, 53, 0.1);' : ''}">
-                            <strong>${festival.name}</strong>
-                            ${festival.rarity ? `<span class="festival-rarity rarity-${festival.rarity}">${festival.rarity.replace(/_/g, ' ').toUpperCase()}</span>` : ''}
-                            <br>
-                            <small>${festival.description}</small><br>
-                            ${festival.specialNote ? `<div class="special-note">⭐ ${festival.specialNote}</div>` : ''}
-                            <div style="background: rgba(255,255,255,0.2); padding: 8px; border-radius: 5px; margin-top: 8px;">
-                                ⏰ ${festival.countdown.message}
+                            <div style="margin-bottom: 15px; ${festival.rarity === 'every_144_years' || festival.rarity === 'every_12_years' ? 'border: 2px solid #ff6b35; border-radius: 8px; padding: 10px; background: rgba(255, 107, 53, 0.1);' : ''}">
+                                <strong>${festival.name}</strong>
+                                ${festival.rarity ? `<span class="festival-rarity rarity-${festival.rarity}">${festival.rarity.replace(/_/g, ' ').toUpperCase()}</span>` : ''}
+                                <br>
+                                <small>${festival.description}.</small><br>
+                                ${festival.specialNote ? `<div class="special-note">⭐ ${festival.specialNote}</div>` : ''}
+                                <div style="background: rgba(255,255,255,0.2); padding: 8px; border-radius: 5px; margin-top: 8px;">
+                                    ⏰ ${festival.countdown.message}
+                                </div>
                             </div>
-                        </div>
-                    `).join('')}
-                </div>
-            ` : ''}
-            
-            <div class="detail-item">
-                <div class="detail-label">Travel Information</div>
-                <div class="detail-value">
-                    <strong>Nearest Airport:</strong> ${site.nearestAirport}<br>
-                    <strong>Nearest Railway:</strong> ${site.nearestRailway}<br><br>
-                    <strong>Travel Tips:</strong> ${site.travelTips}
-                </div>
-            </div>
+                        `).join('')}
+                    </div>
+                ` : `
+                    <div class="countdown-timer festivals-narrow">
+                        <h4>🎊 Upcoming Festivals</h4>
+                        <p>No upcoming festivals scheduled</p>
+                    </div>
+                `}
         </div>
     `;
     
@@ -577,6 +579,12 @@ function showSiteDetailsModal(siteId) {
 
 // Legacy function for backward compatibility (now redirects to modal)
 function showSiteDetails(siteId) {
+    // Close countdown modal if it's open
+    const countdownModal = document.getElementById('countdownModal');
+    if (countdownModal && countdownModal.style.display === 'block') {
+        countdownModal.style.display = 'none';
+    }
+    
     showSiteDetailsModal(siteId);
 }
 
