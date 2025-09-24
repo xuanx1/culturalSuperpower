@@ -423,6 +423,24 @@ function renderIcon(religion, size = '16px', className = '', forMarker = false) 
     }
 }
 
+// Helper function to get image filename from site name
+function getSiteImagePath(siteName) {
+    // Map of site names to their corresponding image files
+    const imageMap = {
+        'Golden Temple (Harmandir Sahib)': 'Golden-Temple-Amritsar.jpg',
+        'Kedarnath Temple': 'Kedarnath-Temple.jpg',
+        'Meenakshi Temple, Madurai': 'Meenakshi-Temple.jpg',
+        'Madurai Meenakshi Temple': 'Meenakshi-Temple.jpg',
+        'Somnath Temple': 'Shree-Somnath-Temple.jpg',
+        'Shri Kalkaji Mandir': 'Shri-Kalkaji-Mandir.jpg',
+        'Tirupati Balaji Temple': 'tirupati-bala-ji-temple.webp',
+        'Venkateswara Temple, Tirumala': 'tirupati-bala-ji-temple.webp',
+        'Vaishno Devi Temple': 'vaishno-devi-mandir.jpg'
+    };
+    
+    return imageMap[siteName] ? `img/${imageMap[siteName]}` : null;
+}
+
 // Show detailed site information in modal
 function showSiteDetailsModal(siteId) {
     const site = typeof siteId === 'object' ? siteId : religiousSites.find(s => s.id === siteId);
@@ -446,32 +464,53 @@ function showSiteDetailsModal(siteId) {
     // Set modal title
     title.innerHTML = `${renderIcon(site.religion, '24px')} ${site.name}`;
     
-    // Create photo gallery if photos exist
-    const photoGallery = site.photos && site.photos.length > 0 ? `
-        <div class="photo-gallery">
-            <div class="photo-main" onclick="openPhotoModal('${site.photos[0].url}', '${site.photos[0].caption}')">
-                <img src="${site.photos[0].url}" alt="${site.name}" onerror="this.style.display='none'">
-                <div class="photo-caption">
-                    ${site.photos[0].caption}
-                    <div class="photo-credit">📷 ${site.photos[0].credit}</div>
+    // Get image path from img folder
+    const imagePath = getSiteImagePath(site.name);
+    
+    // Create photo display (using img folder or existing photos)
+    let photoDisplay = '';
+    
+    if (imagePath) {
+        // Use image from img folder
+        photoDisplay = `
+            <div class="photo-gallery">
+                <div class="photo-main" onclick="openPhotoModal('${imagePath}', '${site.name}')">
+                    <img src="${imagePath}" alt="${site.name}" onerror="this.style.display='none'">
+                    <div class="photo-caption">
+                        ${site.name}
+                        <div class="photo-credit">📷 Local Image</div>
+                    </div>
                 </div>
             </div>
-            ${site.photos.length > 1 ? `
-                <div class="photo-thumbnails">
-                    ${site.photos.map((photo, index) => `
-                        <div class="photo-thumb ${index === 0 ? 'active' : ''}" 
-                             onclick="switchMainPhoto(${index}, '${site.id}')">
-                            <img src="${photo.url}" alt="${photo.caption}" onerror="this.parentElement.style.display='none'">
-                        </div>
-                    `).join('')}
+        `;
+    } else if (site.photos && site.photos.length > 0) {
+        // Fallback to existing photos if available
+        photoDisplay = `
+            <div class="photo-gallery">
+                <div class="photo-main" onclick="openPhotoModal('${site.photos[0].url}', '${site.photos[0].caption}')">
+                    <img src="${site.photos[0].url}" alt="${site.name}" onerror="this.style.display='none'">
+                    <div class="photo-caption">
+                        ${site.photos[0].caption}
+                        <div class="photo-credit">📷 ${site.photos[0].credit}</div>
+                    </div>
                 </div>
-            ` : ''}
-        </div>
-    ` : '';
+                ${site.photos.length > 1 ? `
+                    <div class="photo-thumbnails">
+                        ${site.photos.map((photo, index) => `
+                            <div class="photo-thumb ${index === 0 ? 'active' : ''}" 
+                                 onclick="switchMainPhoto(${index}, '${site.id}')">
+                                <img src="${photo.url}" alt="${photo.caption}" onerror="this.parentElement.style.display='none'">
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    }
     
     content.innerHTML = `
         <div class="site-info">
-            ${photoGallery}
+            ${photoDisplay}
             
             <div class="site-details">
                 <div class="detail-item">
@@ -770,11 +809,43 @@ function selectSearchResult(siteId) {
     }
 }
 
+// Handle legend item clicks for filtering
+function handleLegendClick(religion) {
+    const legendItems = document.querySelectorAll('.legend-item');
+    
+    // Toggle selection: if clicking the same religion, reset filter
+    if (selectedLegendFilter === religion) {
+        selectedLegendFilter = null;
+        // Remove all filter classes
+        legendItems.forEach(item => {
+            item.classList.remove('legend-active', 'legend-inactive');
+        });
+    } else {
+        // Set new religion filter
+        selectedLegendFilter = religion;
+        
+        // Update visual states
+        legendItems.forEach(item => {
+            const itemReligion = item.getAttribute('data-religion');
+            if (itemReligion === religion) {
+                item.classList.add('legend-active');
+                item.classList.remove('legend-inactive');
+            } else {
+                item.classList.add('legend-inactive');
+                item.classList.remove('legend-active');
+            }
+        });
+    }
+    
+    // Apply the filter to the map
+    applyFilters();
+}
+
 // Apply filters to map markers
 function applyFilters() {
-    const religionFilter = window.getCurrentReligionFilter ? window.getCurrentReligionFilter() : 'all';
+    const religionFilter = selectedLegendFilter || (window.getCurrentReligionFilter ? window.getCurrentReligionFilter() : 'all');
     const stateFilter = window.getCurrentStateFilter ? window.getCurrentStateFilter() : 'all';
-    const searchText = document.getElementById('searchBox').value.toLowerCase();
+    const searchText = document.getElementById('searchBox') ? document.getElementById('searchBox').value.toLowerCase() : '';
     
     filteredSites = religiousSites.filter(site => {
         const matchesReligion = religionFilter === 'all' || site.religion === religionFilter;
@@ -790,8 +861,12 @@ function applyFilters() {
     
     addMarkersToMap(filteredSites);
     
-    // Update map view if filtered results are limited
-    if (filteredSites.length > 0 && filteredSites.length < religiousSites.length) {
+    // Handle map view updates
+    if (filteredSites.length === religiousSites.length || selectedLegendFilter === null) {
+        // No filter active or showing all sites - reset to original India view
+        map.setView([22.5937, 78.9629], 5);
+    } else if (filteredSites.length > 0 && filteredSites.length < religiousSites.length) {
+        // Filter active with results - zoom to show filtered markers
         const group = new L.featureGroup(allMarkers);
         if (group.getBounds().isValid()) {
             map.fitBounds(group.getBounds().pad(0.1));
@@ -849,17 +924,28 @@ function showCountdownModal() {
     // Create countdown items
     countdownList.innerHTML = displayFestivals.map(festival => {
         const isRare = festival.rarity === 'every_144_years' || festival.rarity === 'every_12_years' || festival.rarity === 'every_6_years';
+        const imagePath = getSiteImagePath(festival.siteName);
+        
         return `
             <div class="countdown-item ${isRare ? 'rare-event' : ''}" onclick="showSiteDetails(${festival.siteId})">
-                <h4>${renderIcon(festival.religion, '16px')} ${festival.name}
-                    ${festival.rarity ? `<span class="festival-rarity rarity-${festival.rarity}">${festival.rarity.replace(/_/g, ' ').toUpperCase()}</span>` : ''}
-                </h4>
-                <div class="location">${festival.siteName}, ${festival.siteState}</div>
-                <p>${festival.description}</p>
-                ${festival.specialNote ? `<div class="special-note">⭐ ${festival.specialNote}</div>` : ''}
-                <div class="countdown-display">
-                    ⏰ ${festival.countdown.message}
-                    ${isRare ? ' 🌟' : ''}
+                <div class="countdown-item-header">
+                    <div class="countdown-item-content">
+                        <h4>${renderIcon(festival.religion, '16px')} ${festival.name}
+                            ${festival.rarity ? `<span class="festival-rarity rarity-${festival.rarity}">${festival.rarity.replace(/_/g, ' ').toUpperCase()}</span>` : ''}
+                        </h4>
+                        <div class="location">${festival.siteName}, ${festival.siteState}</div>
+                        <p>${festival.description}</p>
+                        ${festival.specialNote ? `<div class="special-note">⭐ ${festival.specialNote}</div>` : ''}
+                        <div class="countdown-display">
+                            ⏰ ${festival.countdown.message}
+                            ${isRare ? ' 🌟' : ''}
+                        </div>
+                    </div>
+                    ${imagePath ? `
+                        <div class="countdown-item-thumbnail">
+                            <img src="${imagePath}" alt="${festival.siteName}" onerror="this.parentElement.style.display='none'">
+                        </div>
+                    ` : ''}
                 </div>
             </div>
         `;
@@ -980,7 +1066,7 @@ function getFestivalPhoto(festivalName, siteName, religion) {
         'mosque': 'islam.png',
         
         // Bahai
-        'bahai': 'bahai.webp'
+        'bahai': 'bahai.png'
     };
     
     // Check festival name first
@@ -1006,7 +1092,7 @@ function getFestivalPhoto(festivalName, siteName, religion) {
         'Sikh': 'sikh.svg',
         'Christian': 'christian.svg',
         'Islam': 'islam.png',
-        'Bahai': 'bahai.webp'
+        'Bahai': 'bahai.png'
     };
     
     return religionImageMap[religion] || 'hamsa.png'; // Default fallback
@@ -1170,6 +1256,9 @@ function updateCountdowns() {
     }
 }
 
+// Global variable to track selected legend filter
+let selectedLegendFilter = null;
+
 // Populate legend with actual map icons
 function populateLegend() {
     const legendItems = document.getElementById('legendItems');
@@ -1185,7 +1274,7 @@ function populateLegend() {
                           religion.charAt(0).toUpperCase() + religion.slice(1);
         
         return `
-            <div class="legend-item">
+            <div class="legend-item" data-religion="${religion}" style="cursor: pointer; transition: opacity 0.3s ease;">
                 <div class="legend-icon">
                     ${icon}
                 </div>
@@ -1193,6 +1282,15 @@ function populateLegend() {
             </div>
         `;
     }).join('');
+    
+    // Add click event listeners to legend items
+    const legendItemElements = legendItems.querySelectorAll('.legend-item');
+    legendItemElements.forEach(item => {
+        item.addEventListener('click', function() {
+            const religion = this.getAttribute('data-religion');
+            handleLegendClick(religion);
+        });
+    });
 }
 
 // Make functions globally available

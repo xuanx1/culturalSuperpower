@@ -137,6 +137,28 @@
                 height: 16px;
                 border-radius: 50%;
             }
+            
+            /* Legend filtering styles */
+            .legend-item {
+                transition: opacity 0.3s ease, transform 0.2s ease;
+            }
+            
+            .legend-item:hover {
+                transform: translateX(2px);
+            }
+            
+            .legend-item.legend-active {
+                opacity: 1 !important;
+            }
+            
+            .legend-item.legend-inactive {
+                opacity: 0.3;
+            }
+            
+            .legend-item.legend-active .legend-icon {
+                background: rgba(255, 255, 255, 0.9);
+                box-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
+            }
 
             .hero .left { padding-right:6px; }
 

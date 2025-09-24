@@ -2752,7 +2752,7 @@ const religionIcons = {
     sikh: "sikh.svg",
     christian: "christian.svg",
     islam: "islam.png",
-    bahai: "bahai.webp",
+    bahai: "bahai.png",
     other: "🔯"
 };
 
