@@ -19,7 +19,7 @@ function initializeMap() {
     // Create map centered on India with tighter bounds
     map = L.map('map', {
         minZoom: 5,
-        maxZoom: 7,
+        maxZoom: 10,
         zoomControl: false,
         attributionControl: true
     }).setView([22.5937, 78.9629], 5);
@@ -65,7 +65,7 @@ function initializeMap() {
     // Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetMap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
-        maxZoom: 7
+        maxZoom: 10
     }).addTo(map);
     
     // Load India administrative boundaries (states)
@@ -461,27 +461,157 @@ function renderIcon(religion, size = '16px', className = '', forMarker = false) 
 function getSiteImagePath(siteName) {
     // Map of site names to their corresponding image files
     const imageMap = {
-        // Main temple mappings
+        // Major Hindu Temples
         'Amarnath Cave Temple': 'Amarnath-Cave-Temple.jpg',
+        'Badrinath Temple': 'Badrinath-Temple.webp',
+        'Bhimashankar Temple': 'Bhimashankar-Jyotirlinga-Temple.webp',
+        'Brihadeeswarar Temple, Thanjavur': 'Brihadeeswarar-Temple- Thanjavur.jpg',
+        'Chintpurni Temple': 'chintpurni-temple.webp',
+        'Dakshineswar Kali Temple': 'Dakshineswar-Kali-Temple.jpg',
+        'Dwarka Temple': 'Dwarka-Temple.jpg',
+        'Nageshwar Jyotirlinga, Dwarka': 'Nageshwar-Jyotirlinga-temple.jpg',
+        'Gangotri Temple': 'gangotri-temple.webp',
         'Golden Temple (Harmandir Sahib)': 'Golden-Temple-Amritsar.jpg',
+        'Grishneshwar Temple': 'Grishneshwar-Temple.jpg',
+        'Guruvayur Temple': 'guruvayur-temple.jpg',
+        'Haridwar': 'Haridwar.png',
+        'Iskcon Temple Mayapur': 'Iskcon-Temple-Mayapur.webp',
+        'Jagannath Temple, Puri': 'Shri-Jagannath-Temple.jpg',
+        'Kalighat Temple, Kolkata': 'Kalighat-Temple-Kolkata.jpg',
+        'Kamakhya Temple': 'Kamakhya-Temple.jpg',
         'Kashi Vishwanath Temple, Varanasi': 'Kashi-Vishwanath-Temple.jpg',
         'Kedarnath Temple': 'Kedarnath-Temple.jpg',
+        'Khajuraho Temples': 'Khajuraho-temples.jpg',
+        'Sun Temple, Konark': 'Konarka-sun-Temple.jpg',
+        'Konark Sun Temple': 'Konarka-sun-Temple.jpg',
+        'Lingaraj Temple': 'lingaraj-temple.jpg',
+        'Mahakaleshwar Temple, Ujjain': 'Mahakaleshwar-Temple-Ujjain.jpg',
+        'Mallikarjuna Temple, Srisailam': 'mallikarjuna-temple-srisailam.jpg',
+        'Mathura Vrindavan': 'Mathura-Vrindavan-temple-day.jpg',
         'Meenakshi Temple, Madurai': 'Meenakshi-Temple.jpg',
         'Madurai Meenakshi Temple': 'Meenakshi-Temple.jpg',
+        'Omkareshwar Temple': 'Omkareshwar-temple.jpg',
+        'Pushkar Temple': 'Brahma-Temple- Pushkar.jpg',
+        'Brahma Temple, Pushkar': 'Brahma-Temple- Pushkar.jpg',
+        'Rameswaram Temple': 'rameswaram-temple.webp',
+        'Rameshwaram Temple': 'rameswaram-temple.webp',
+        'Ranganathaswamy Temple, Srirangam': 'Ranganathaswamy-Temple-Srirangam.jpg',
         'Sabarimala Temple': 'Sabarimala-Ayyappa-Temple.jpg',
-        'Somnath Temple': 'Shree-Somnath-Temple.jpg',
-        'Jagannath Temple, Puri': 'Shri-Jagannath-Temple.jpg',
         'Shirdi Sai Baba Temple': 'Shri-Shirdi-Sai-Baba-Temple.jpg',
+        'Shri Kalkaji Mandir': 'Shri-Kalkaji-Mandir.jpg',
+        'Siddhivinayak Temple, Mumbai': 'Mumbai-Siddhivinayak-Temple.jpg',
+        'Somnath Temple': 'Shree-Somnath-Temple.jpg',
         'Tirupati Balaji Temple': 'tirupati-bala-ji-temple.webp',
         'Venkateswara Temple, Tirumala': 'tirupati-bala-ji-temple.webp',
+        'Trimbakeshwar Temple': 'trimbakeshwar-shiva-temple-.png',
         'Vaishno Devi Temple': 'vaishno-devi-mandir.jpg',
-        
-        // Alternative names and variations
-        'Rameshwaram Temple': 'Sabarimala-Ayyappa-Temple.jpg', // Using closest available image
-        'Rameswaram Temple': 'Sabarimala-Ayyappa-Temple.jpg'   // Using closest available image
+        'Vindhyavasini Temple, Vindhyachal': 'Vindhyavasini-Temple-Vindhyachal.webp',
+        'Yamunotri Temple': 'Yamunotri-temple.webp',
+
+        // Buddhist Sites
+        'Bodh Gaya': 'Bodh-Gaya.webp',
+        'Bodh Gaya Temple': 'Bodh-Gaya.webp',
+        'Dharamshala (McLeod Ganj)': 'DharamshalaMcLeodGanj.jpg',
+        'Dhankar Monastery': 'Dhankar-monastery.jpg',
+        'Hemis Monastery': 'Hemis-Monastery.jpg',
+        'Kushinagar': 'Kushinagar-Mahaparinirvana.webp',
+        'Kushinagar (Mahaparinirvana Temple & Buddhist Complex)': 'Kushinagar-Mahaparinirvana.webp',
+        'Lumbini (Kapilavastu)': 'Kapilavastu.jpg',
+        'Nalanda University Ruins': 'Nalanda-University-Ruins.jpg',
+        'Rumtek Monastery': 'Rumtek-Monastery.jpg',
+        'Sanchi Stupa': 'Sanchi-Stupa.jpg',
+        'Sarnath': 'sarnath-varanasi-temple.jpg',
+        'Tawang Monastery': 'tawang-monastery.jpg',
+
+        // Sikh Gurdwaras
+        'Akal Takht': 'Akal-Takht.jpg',
+        'Anandpur Sahib': 'Anandpur_Sahib_at_Hola_Mahala.jpg',
+        'Gurdwara Bangla Sahib': 'Gurdwara-bangla-Sahib.jpg',
+        'Gurdwara Sis Ganj Sahib': 'Gurdwara-Sis-Ganj-Sahib.jpg',
+        'Hemkund Sahib': 'Gurudwara-Hemkund-Sahib.webp',
+        'Gurdwara Manikaran Sahib': 'gurudwara-manikaran-sahib-kullu-himachal-pradesh.jpg',
+        'Patna Sahib': 'Patna-Sahib.jpg',
+        'Takht Sri Damdama Sahib': 'Takht-Sri-Damdama-Sahib.jpg',
+
+        // Jain Temples
+        'Dilwara Temples, Mount Abu': 'Dilwara-Temples.jpg',
+        'Gomateshwara Temple, Karkala': 'Gomateshwara-Temple- Karkala.webp',
+        'Palitana Temples': 'Palitana-Temples.jpg',
+        'Parasnath Hill Temple': 'Parasnath-Hill-Temple.jpg',
+        'Ranakpur Jain Temple': 'Ranakpur-Jain-Temple.jpg',
+        'Shravanabelagola': 'Shravanabelagola.jpg',
+        'Sonagiri Jain Temples': 'Sonagiri.jpg',
+
+        // Islamic Sites
+        'Ajmer Sharif Dargah': 'Ajmer-Sharif-Dargah.jpg',
+        'Charminar': 'Charminars-Hyderabad.jpg',
+        'Fatehpur Sikri': 'Fatehput_Sikiri_Buland_Darwaza_gate.jpg',
+        'Gol Gumbaz': 'Gol-Gumbaz.jpg',
+        'Haji Ali Dargah': 'Haji-Ali-Dargah.jpg',
+        'Ibrahim Roza': 'Ibrahim-roza.jpg',
+        'Jama Masjid, Delhi': 'Jama-Masjid- Delhi.webp',
+        'Mecca Masjid, Hyderabad': 'Mecca-Masjid-Hyderabad.webp',
+        'Nizamuddin Dargah': 'Nizamuddin-Dargah.jpg',
+
+        // Christian Churches
+        'Basilica of Bom Jesus, Goa': 'basilica-bom-jesus-goa-india.webp',
+        'Basilica of Our Lady of Ransom': 'Basilica-of-Our-Lady-of-Ransom.jpg',
+        'Medak Cathedral': 'Medak-Cathedral.jpg',
+        'Mount Mary Church, Mumbai': 'mount-mary-church-mumbai-maharashtra.jpg',
+        'Se Cathedral, Goa': 'se-cathedral.jpg',
+        'St. Francis Church, Kochi': 'St-Francis- Kochi.jpg',
+        'St. Thomas Cathedral, Chennai': 'st-thomas-chennai.jpg',
+        'St. Thomas Mount': 'St-Thomas-Mount.webp',
+        'Velankanni Church': 'Velankanni-Church.jpg',
+
+        // Other Religious Sites
+        'Donyi-Polo Temple, Itanagar': 'Donyi-Polo-Temple-Itanagar.jpg',
+        'Knesset Eliyahoo Synagogue, Mumbai': 'Knesset-Eliyahoo-Synagogue-Mumbai.jpg',
+        'Lotus Temple, Delhi': 'lotus-temple-delhi.jpg',
+        'Magen David Synagogue, Mumbai': 'magen_david.jpg',
+        'Paradesi Synagogue, Kochi': 'Paradesi-Synagogue-Kochi.webp',
+        'Sacred Grove of Mawphlang': 'mawphlang.jpg',
+        'Udvada Atash Behram': 'udvada-atash-behram.jpg',
+
+        // Special Festival Sites
+        'Allahabad (Prayagraj) - Kumbh Mela': 'Haridwar.png', // Use Haridwar image for Kumbh venue
+        'Jama Masjid, Old Delhi': 'Jama-Masjid- Delhi.webp', // Alternative name for Jama Masjid
+        'Dargah Sharif, Ajmer': 'Ajmer-Sharif-Dargah.jpg', // Alternative name for Ajmer Sharif
+        'Haji Ali Dargah, Mumbai': 'Haji-Ali-Dargah.jpg', // Alternative name for Haji Ali
+        'Nizamuddin Dargah, Delhi': 'Nizamuddin-Dargah.jpg' // Alternative name for Nizamuddin
     };
     
     return imageMap[siteName] ? `img/${imageMap[siteName]}` : null;
+}
+
+// Helper function to get all images for a site (main + inside views)
+function getAllSiteImages(siteName) {
+    const images = [];
+    const mainImage = getSiteImagePath(siteName);
+    
+    if (mainImage) {
+        images.push({
+            path: mainImage,
+            caption: siteName,
+            type: 'main'
+        });
+    }
+    
+    // Check for sites with additional inside photos
+    const insideImageMap = {
+        'Ranakpur Jain Temple': 'Ranakpur-Jain-Temple-inside.webp',
+        'Dharamshala (McLeod Ganj)': 'DharamshalaMcLeodGanj-inside.jpg'
+    };
+    
+    if (insideImageMap[siteName]) {
+        images.push({
+            path: `img/${insideImageMap[siteName]}`,
+            caption: `${siteName} - Interior View`,
+            type: 'inside'
+        });
+    }
+    
+    return images;
 }
 
 // Show detailed site information in modal
@@ -507,23 +637,34 @@ function showSiteDetailsModal(siteId) {
     // Set modal title
     title.innerHTML = `${renderIcon(site.religion, '24px')} ${site.name}`;
     
-    // Get image path from img folder
-    const imagePath = getSiteImagePath(site.name);
+    // Get all images for this site (main + inside views)
+    const allImages = getAllSiteImages(site.name);
     
     // Create photo display (using img folder or existing photos)
     let photoDisplay = '';
     
-    if (imagePath) {
-        // Use image from img folder
+    if (allImages.length > 0) {
+        // Use images from img folder
         photoDisplay = `
             <div class="photo-gallery">
-                <div class="photo-main" onclick="openPhotoModal('${imagePath}', '${site.name}')">
-                    <img src="${imagePath}" alt="${site.name}" onerror="this.style.display='none'">
+                <div class="photo-main" onclick="openPhotoModal('${allImages[0].path}', '${allImages[0].caption}')">
+                    <img src="${allImages[0].path}" alt="${site.name}" onerror="this.style.display='none'">
                     <div class="photo-caption">
-                        ${site.name}
+                        ${allImages[0].caption}
                         <div class="photo-credit">📷 Local Image</div>
                     </div>
                 </div>
+                ${allImages.length > 1 ? `
+                    <div class="photo-thumbnails">
+                        ${allImages.map((image, index) => `
+                            <div class="photo-thumb ${index === 0 ? 'active' : ''}" 
+                                 onclick="switchLocalPhoto(${index}, '${site.name}')">
+                                <img src="${image.path}" alt="${image.caption}" onerror="this.parentElement.style.display='none'">
+                                <div class="thumb-label">${image.type === 'inside' ? 'Interior' : 'Exterior'}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
             </div>
         `;
     } else if (site.photos && site.photos.length > 0) {
@@ -1068,6 +1209,29 @@ function switchMainPhoto(photoIndex, siteId) {
     
     // Update main photo click handler
     document.querySelector('.photo-main').onclick = () => openPhotoModal(site.photos[photoIndex].url, site.photos[photoIndex].caption);
+}
+
+function switchLocalPhoto(photoIndex, siteName) {
+    const allImages = getAllSiteImages(siteName);
+    if (!allImages || !allImages[photoIndex]) return;
+    
+    const mainPhoto = document.querySelector('.photo-main img');
+    const caption = document.querySelector('.photo-caption');
+    const thumbnails = document.querySelectorAll('.photo-thumb');
+    
+    // Update main photo
+    mainPhoto.src = allImages[photoIndex].path;
+    
+    // Update caption
+    caption.childNodes[0].textContent = allImages[photoIndex].caption;
+    
+    // Update thumbnail active state
+    thumbnails.forEach((thumb, index) => {
+        thumb.classList.toggle('active', index === photoIndex);
+    });
+    
+    // Update main photo click handler
+    document.querySelector('.photo-main').onclick = () => openPhotoModal(allImages[photoIndex].path, allImages[photoIndex].caption);
 }
 
 // Update all countdowns

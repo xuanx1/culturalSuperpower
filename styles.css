@@ -530,7 +530,7 @@ body {
     display: flex;
     gap: 5px;
     padding: 10px;
-    background: #f8f9fa;
+    background: #181f2f;
 }
 
 .photo-thumb {
@@ -1488,6 +1488,63 @@ body {
     transform: scale(1.02);
     border-color: rgba(255,255,255,0.2);
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Countdown Overlay Sidebar */
+.countdown-overlay {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 320px;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    color: white;
+    z-index: 1000;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+}
+
+.countdown-overlay .actions {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.countdown-overlay .actions .btn {
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.countdown-overlay .actions .btn.festival-name-gradient {
+    background: transparent !important;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    /* White text when not hovered */
+    color: white;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+    /* Disable gradient text initially */
+    -webkit-text-fill-color: initial;
+    background-clip: initial;
+}
+
+.countdown-overlay .actions .btn.festival-name-gradient:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 209, 102, 0.3);
+    /* Apply Brahmotsavam gradient on hover */
+    background: linear-gradient(90deg, #fff 0%, #ffd166 30%, #ffb4a2 60%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    text-shadow: none !important;
 }
 
 /* Title and Subtitle Styling */

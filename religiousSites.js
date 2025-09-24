@@ -1078,7 +1078,7 @@ const religiousSites = [
             {
                 name: "Karkala Gomateshwara Mahamastakabhisheka",
                 date: "2032-02-20",
-                description: "Grand anointing ceremony held every 12 years",
+                description: "Grand anointing ceremony held every 12 years where the 42-foot statue is bathed with saffron paste, milk, water, and other precious substances",
                 rarity: "every_12_years"
             }
         ],
@@ -2541,6 +2541,371 @@ const religiousSites = [
         travelTips: "Guided tours by local Khasi guides only. No removal of any plant or stone allowed. Sacred site with strict traditional protocols.",
         nearestAirport: "Shillong Airport (25 km)",
         nearestRailway: "Guwahati Railway Station (100 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    // Additional Major Hindu Temples
+    {
+        id: 98,
+        name: "Siddhivinayak Temple, Mumbai",
+        religion: "hindu",
+        state: "Maharashtra",
+        coordinates: [19.0178, 72.8301],
+        significance: "Famous Ganesha temple known for wish fulfillment",
+        description: "One of Mumbai's most popular temples dedicated to Lord Ganesha, visited by millions of devotees and celebrities seeking blessings.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Ganesh Chaturthi",
+                date: "2026-08-31",
+                description: "Grand celebration of Lord Ganesha's birthday",
+                rarity: "annual"
+            },
+            {
+                name: "Sankashti Chaturthi",
+                date: "2026-01-09",
+                description: "Monthly Ganesha festival",
+                rarity: "monthly"
+            }
+        ],
+        travelTips: "Visit on Tuesday for special aarti. Long queues expected during festivals. Book VIP darshan to avoid waiting.",
+        nearestAirport: "Chhatrapati Shivaji International Airport (20 km)",
+        nearestRailway: "Prabhadevi Railway Station (1 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 99,
+        name: "Brihadeeswarar Temple, Thanjavur",
+        religion: "hindu",
+        state: "Tamil Nadu",
+        coordinates: [10.7825, 79.1313],
+        significance: "UNESCO World Heritage Site and Chola architecture masterpiece",
+        description: "Magnificent 1000-year-old temple built by Raja Raja Chola I, famous for its 66-meter tall vimana and architectural grandeur.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Maha Shivaratri",
+                date: "2026-03-11",
+                description: "Grand Shiva festival with special abhishekam",
+                rarity: "annual"
+            },
+            {
+                name: "Chola Festival",
+                date: "2026-01-15",
+                description: "Celebration of Chola heritage and culture",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "UNESCO World Heritage Site. Best visited with a guide to appreciate architecture. Photography allowed in courtyards.",
+        nearestAirport: "Tiruchirappalli Airport (55 km)",
+        nearestRailway: "Thanjavur Railway Station (3 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 100,
+        name: "Guruvayur Temple",
+        religion: "hindu",
+        state: "Kerala",
+        coordinates: [10.5912, 76.0348],
+        significance: "Important Krishna temple known as Dwarka of the South",
+        description: "Ancient temple dedicated to Lord Guruvayurappan (Krishna), famous for its healing powers and traditional Kerala architecture.",
+        bestTimeToVisit: "October to April",
+        bestMonths: [10, 11, 12, 1, 2, 3, 4],
+        festivals: [
+            {
+                name: "Guruvayur Ekadashi",
+                date: "2026-11-26",
+                description: "Most important festival of the temple",
+                rarity: "annual"
+            },
+            {
+                name: "Chembai Music Festival",
+                date: "2026-01-20",
+                description: "Classical music festival in temple premises",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Only Hindus allowed inside. Dress code strictly enforced. Book online for special poojas. Famous for elephant sanctuary.",
+        nearestAirport: "Cochin International Airport (80 km)",
+        nearestRailway: "Guruvayur Railway Station (1 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    // Additional Sikh Sites
+    {
+        id: 101,
+        name: "Gurdwara Sis Ganj Sahib",
+        religion: "sikh",
+        state: "Delhi",
+        coordinates: [28.6506, 77.2334],
+        significance: "Martyrdom site of Guru Tegh Bahadur",
+        description: "Historic gurdwara built at the exact spot where Guru Tegh Bahadur was beheaded by Mughal emperor Aurangzeb in 1675.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Guru Tegh Bahadur Martyrdom Day",
+                date: "2025-11-24",
+                description: "Commemoration of ninth Guru's supreme sacrifice",
+                rarity: "annual"
+            },
+            {
+                name: "Guru Nanak Jayanti",
+                date: "2025-11-15",
+                description: "Birthday of first Guru",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Located in busy Chandni Chowk area. Free langar available. Pay respects at martyrdom site.",
+        nearestAirport: "Indira Gandhi International Airport (20 km)",
+        nearestRailway: "Old Delhi Railway Station (2 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 102,
+        name: "Gurdwara Manikaran Sahib",
+        religion: "sikh",
+        state: "Himachal Pradesh",
+        coordinates: [32.0433, 77.3450],
+        significance: "Sacred site with natural hot springs",
+        description: "Unique gurdwara where Guru Nanak meditated, featuring natural hot springs used for cooking langar. Popular pilgrimage destination.",
+        bestTimeToVisit: "March to June, September to November",
+        bestMonths: [3, 4, 5, 6, 9, 10, 11],
+        festivals: [
+            {
+                name: "Guru Nanak Jayanti",
+                date: "2025-11-15",
+                description: "Special celebrations at this sacred site",
+                rarity: "annual"
+            },
+            {
+                name: "Baisakhi",
+                date: "2026-04-14",
+                description: "Harvest festival celebrations",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Experience hot springs and langar cooked using geothermal energy. Scenic Parvati Valley location. Carry warm clothes.",
+        nearestAirport: "Bhuntar Airport (35 km)",
+        nearestRailway: "Joginder Nagar Railway Station (144 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    // Additional Buddhist Sites
+    {
+        id: 103,
+        name: "Dhankar Monastery",
+        religion: "buddhist",
+        state: "Himachal Pradesh",
+        coordinates: [32.2833, 78.0500],
+        significance: "Ancient monastery perched on cliff in Spiti Valley",
+        description: "1000-year-old Buddhist monastery dramatically located on a cliff edge, serving as former capital of Spiti kingdom.",
+        bestTimeToVisit: "May to October",
+        bestMonths: [5, 6, 7, 8, 9, 10],
+        festivals: [
+            {
+                name: "Dhankar Gustor",
+                date: "2026-07-15",
+                description: "Annual monastic festival with mask dances",
+                rarity: "annual"
+            },
+            {
+                name: "Buddha Purnima",
+                date: "2026-05-07",
+                description: "Buddha's birthday celebration",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "High altitude location requires acclimatization. Carry warm clothing even in summer. Stunning Himalayan views.",
+        nearestAirport: "Shimla Airport (200 km)",
+        nearestRailway: "Chandigarh Railway Station (370 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    // Additional Islamic Sites
+    {
+        id: 104,
+        name: "Mecca Masjid, Hyderabad",
+        religion: "islam",
+        state: "Telangana",
+        coordinates: [17.3616, 78.4747],
+        significance: "One of largest mosques in India with soil from Mecca",
+        description: "Historic mosque built with bricks made from soil brought from Mecca, can accommodate 10,000 worshippers at once.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Eid ul-Fitr",
+                date: "2026-04-01",
+                description: "Festival marking end of Ramadan",
+                rarity: "annual"
+            },
+            {
+                name: "Eid ul-Adha",
+                date: "2026-06-07",
+                description: "Festival of sacrifice",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Remove shoes before entering. Modest dress required. Beautiful acoustic design enhances prayers.",
+        nearestAirport: "Rajiv Gandhi International Airport (40 km)",
+        nearestRailway: "Hyderabad Deccan Railway Station (2 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    // Additional Christian Sites
+    {
+        id: 105,
+        name: "Medak Cathedral",
+        religion: "christian",
+        state: "Telangana",
+        coordinates: [18.0333, 78.2667],
+        significance: "One of largest cathedrals in Asia",
+        description: "Magnificent Gothic revival cathedral built by British missionaries, featuring stunning stained glass windows and impressive architecture.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Christmas",
+                date: "2025-12-25",
+                description: "Grand Christmas celebrations",
+                rarity: "annual"
+            },
+            {
+                name: "Easter",
+                date: "2026-04-05",
+                description: "Resurrection Sunday celebrations",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Beautiful Gothic architecture. Visit during evening service for best experience. Photography allowed outside.",
+        nearestAirport: "Rajiv Gandhi International Airport (120 km)",
+        nearestRailway: "Medak Railway Station (2 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 106,
+        name: "Iskcon Temple Mayapur",
+        religion: "hindu",
+        state: "West Bengal",
+        coordinates: [23.4237, 88.3889],
+        significance: "World headquarters of ISKCON movement",
+        description: "Birthplace of Chaitanya Mahaprabhu and world headquarters of International Society for Krishna Consciousness, featuring magnificent temple complex.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Gaura Purnima",
+                date: "2026-03-31",
+                description: "Birthday celebration of Chaitanya Mahaprabhu",
+                rarity: "annual"
+            },
+            {
+                name: "Janmashtami",
+                date: "2026-08-15",
+                description: "Krishna's birthday with grand celebrations",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Stay in temple guesthouse for authentic experience. Participate in morning and evening aartis. Vegetarian meals available.",
+        nearestAirport: "Netaji Subhash Chandra Bose International Airport (130 km)",
+        nearestRailway: "Navdwip Ghat Railway Station (10 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 107,
+        name: "Ranganathaswamy Temple, Srirangam",
+        religion: "hindu",
+        state: "Tamil Nadu",
+        coordinates: [10.8505, 78.6916],
+        significance: "Largest functioning Hindu temple complex in the world",
+        description: "Massive temple complex dedicated to Lord Vishnu, spread over 156 acres with 7 concentric walls and 21 gopurams.",
+        bestTimeToVisit: "November to March",
+        bestMonths: [11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Vaikunta Ekadashi",
+                date: "2025-12-11",
+                description: "Most important festival when Vaikunta Dwaram opens",
+                rarity: "annual"
+            },
+            {
+                name: "Panguni Brahmotsavam",
+                date: "2026-03-20",
+                description: "Grand 10-day festival with processions",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Wear traditional attire for inner sanctum. Guided tours available. Famous for its architectural grandeur and spiritual atmosphere.",
+        nearestAirport: "Tiruchirappalli Airport (15 km)",
+        nearestRailway: "Srirangam Railway Station (2 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 108,
+        name: "Dakshineswar Kali Temple",
+        religion: "hindu",
+        state: "West Bengal",
+        coordinates: [22.6533, 88.3581],
+        significance: "Famous temple where Sri Ramakrishna served as priest",
+        description: "Historic Kali temple where mystic Sri Ramakrishna Paramahamsa served as priest and had divine visions. Important pilgrimage site.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Kali Puja",
+                date: "2025-11-01",
+                description: "Grand celebration of Goddess Kali",
+                rarity: "annual"
+            },
+            {
+                name: "Durga Puja",
+                date: "2025-10-09 to 2025-10-13",
+                description: "Festival celebrating Goddess Durga",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Visit Sri Ramakrishna's room and meditation spots. Best reached by ferry from Belur Math. Evening aarti is spectacular.",
+        nearestAirport: "Netaji Subhash Chandra Bose International Airport (25 km)",
+        nearestRailway: "Barrackpur Railway Station (8 km)",
+        photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
+    },
+
+    {
+        id: 109,
+        name: "Akal Takht",
+        religion: "sikh",
+        state: "Punjab",
+        coordinates: [31.6200, 74.8765],
+        significance: "Highest temporal seat of Sikh authority",
+        description: "Akal Takht (Throne of the Timeless) is the highest political institution and temporal seat of Sikh authority, located opposite Golden Temple.",
+        bestTimeToVisit: "October to March",
+        bestMonths: [10, 11, 12, 1, 2, 3],
+        festivals: [
+            {
+                name: "Guru Hargobind Jayanti",
+                date: "2026-06-05",
+                description: "Birthday of sixth Guru who built Akal Takht",
+                rarity: "annual"
+            },
+            {
+                name: "Bandi Chhor Divas",
+                date: "2025-11-01",
+                description: "Sikh festival of liberation",
+                rarity: "annual"
+            }
+        ],
+        travelTips: "Respect Sikh protocols and dress code. Combined visit with Golden Temple recommended. Historical significance in Sikh governance.",
+        nearestAirport: "Sri Guru Ram Dass Jee International Airport (30 km)",
+        nearestRailway: "Amritsar Railway Station (2 km)",
         photos: ["https://images.unsplash.com/photo-1578662996442-48f60103fc96"]
     }];
 
