@@ -1,6 +1,6 @@
 # [Sacred Sites of India](https://xuanx1.github.io/culturalSuperpower/) 🕉️
 
-A [visualization](https://xuanx1.github.io/culturalSuperpower/) showcasing the rich spiritual heritage of India through a comprehensive map of 97 religious sites across 8 major faiths.
+A [visualization](https://xuanx1.github.io/culturalSuperpower/) showcasing the rich spiritual heritage of India through a comprehensive map of over 100 religious sites across 8 major faiths.
 ![Screenshot 2025-09-23 235640](https://github.com/user-attachments/assets/841e07d6-f257-4d9e-83c2-137cea06ba61)
 
 ## ✨ Features
