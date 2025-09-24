@@ -99,29 +99,64 @@ function loadIndiaStateBoundaries() {
                 },
                 onEachFeature: function(feature, layer) {
                     // Add popup with state name if available
-                    if (feature.properties && feature.properties.NAME_1) {
+                    if (feature.properties && feature.properties.shapeName) {
+                        layer.bindPopup(`<strong>${feature.properties.shapeName}</strong>`);
+                    } else if (feature.properties && feature.properties.NAME_1) {
                         layer.bindPopup(`<strong>${feature.properties.NAME_1}</strong>`);
                     } else if (feature.properties && feature.properties.name) {
                         layer.bindPopup(`<strong>${feature.properties.name}</strong>`);
                     }
                     
-                    // Add hover effects
+                    // Store original style
+                    const originalStyle = {
+                        weight: 1,
+                        color: '#8e44ad',
+                        fillOpacity: 0.1,
+                        fillColor: 'transparent'
+                    };
+                    
+                    let stateLabel = null;
+                    
+                    // Add enhanced hover effects
                     layer.on({
                         mouseover: function(e) {
                             const layer = e.target;
+                            const feature = layer.feature;
+                            
+                            // Fill the state and make it prominent
                             layer.setStyle({
                                 weight: 3,
                                 color: '#8e44ad',
-                                fillOpacity: 0.2
+                                fillColor: '#8e44ad',
+                                fillOpacity: 1
                             });
+                            
+                            // Add state name label
+                            const stateName = (feature.properties.shapeName || feature.properties.NAME_1 || feature.properties.name || 'Unknown State').toUpperCase();
+                            const bounds = layer.getBounds();
+                            const center = bounds.getCenter();
+                            
+                            // Create a simple text label
+                            const labelIcon = L.divIcon({
+                                className: 'state-label',
+                                html: `<div class="state-name-text">${stateName}</div>`,
+                                iconSize: [200, 30],
+                                iconAnchor: [100, 15]
+                            });
+                            
+                            stateLabel = L.marker(center, { icon: labelIcon }).addTo(map);
                         },
                         mouseout: function(e) {
                             const layer = e.target;
-                            layer.setStyle({
-                                weight: 1,
-                                color: '#8e44ad',
-                                fillOpacity: 0.1
-                            });
+                            
+                            // Restore original style
+                            layer.setStyle(originalStyle);
+                            
+                            // Remove state label
+                            if (stateLabel) {
+                                map.removeLayer(stateLabel);
+                                stateLabel = null;
+                            }
                         }
                     });
                 }
@@ -884,19 +919,11 @@ function applyFilters() {
 
 // Helper function to create structured countdown display like the next festival overlay
 function createStructuredCountdown(countdown) {
-    // Parse the countdown message to extract days, hours, minutes, seconds
-    const message = countdown.message;
-    
-    // Try to extract numbers from the message
-    const dayMatch = message.match(/(\d+)\s*days?/i);
-    const hourMatch = message.match(/(\d+)\s*hours?/i);
-    const minuteMatch = message.match(/(\d+)\s*minutes?/i);
-    const secondMatch = message.match(/(\d+)\s*seconds?/i);
-    
-    const days = dayMatch ? parseInt(dayMatch[1]) : 0;
-    const hours = hourMatch ? parseInt(hourMatch[1]) : 0;
-    const minutes = minuteMatch ? parseInt(minuteMatch[1]) : 0;
-    const seconds = secondMatch ? parseInt(secondMatch[1]) : 0;
+    // Use the countdown object properties directly instead of parsing the message
+    const days = countdown.days || 0;
+    const hours = countdown.hours || 0;
+    const minutes = countdown.minutes || 0;
+    const seconds = countdown.seconds || 0;
     
     return `
         <div class="countdown-structured">
@@ -984,7 +1011,6 @@ function showCountdownModal() {
                         ${festival.specialNote ? `<div class="special-note">⭐ ${festival.specialNote}</div>` : ''}
                         <div class="countdown-display-structured">
                             ${createStructuredCountdown(festival.countdown)}
-                            ${isRare ? '<div class="rare-indicator">🌟 RARE EVENT</div>' : ''}
                         </div>
                     </div>
                     ${imagePath ? `
@@ -1079,6 +1105,12 @@ function calculateTimeUntil(dateString) {
 }
 
 function getFestivalPhoto(festivalName, siteName, religion) {
+    // First, try to get the site image from img folder
+    const siteImage = getSiteImagePath(siteName);
+    if (siteImage) {
+        return siteImage;
+    }
+    
     // Map festivals to appropriate images based on name, site, or religion
     const festivalImageMap = {
         // Hindu festivals and sites
@@ -1174,6 +1206,14 @@ function updateCountdowns() {
     const nextFestival = allFestivals[0];
     
     if (nextFestival) {
+        // Debug log to see if seconds are being calculated
+        console.log('Updating countdown:', {
+            days: nextFestival.countdown.days,
+            hours: nextFestival.countdown.hours,
+            minutes: nextFestival.countdown.minutes,
+            seconds: nextFestival.countdown.seconds
+        });
+        
         // Update countdown timer
         document.getElementById('days').textContent = String(nextFestival.countdown.days).padStart(3, '0');
         document.getElementById('hours').textContent = String(nextFestival.countdown.hours).padStart(2, '0');
@@ -1300,6 +1340,68 @@ function updateCountdowns() {
             `;
         }
     }
+    
+    // Update countdown displays in Upcoming Festivals modal if it's open
+    updateModalCountdowns();
+}
+
+// Update countdown displays in the Upcoming Festivals modal
+function updateModalCountdowns() {
+    const modal = document.getElementById('countdownModal');
+    if (!modal || modal.style.display !== 'block') {
+        return; // Modal is not open, no need to update
+    }
+    
+    const countdownItems = modal.querySelectorAll('.countdown-item');
+    const sitesToUse = (typeof filteredSites !== 'undefined' && filteredSites.length > 0) ? filteredSites : religiousSites;
+    
+    // Get fresh countdown data
+    const allFestivals = [];
+    sitesToUse.forEach(site => {
+        if (site.festivals) {
+            site.festivals.forEach(festival => {
+                const countdown = calculateTimeUntil(festival.date);
+                if (!countdown.expired) {
+                    allFestivals.push({
+                        ...festival,
+                        siteName: site.name,
+                        countdown: countdown,
+                        siteId: site.id
+                    });
+                }
+            });
+        }
+    });
+    
+    // Sort by date (same as in showCountdownModal)
+    allFestivals.sort((a, b) => {
+        let dateA = a.date;
+        let dateB = b.date;
+        
+        if (typeof dateA === 'string' && dateA.includes(' to ')) {
+            dateA = dateA.split(' to ')[0].trim();
+        }
+        if (typeof dateB === 'string' && dateB.includes(' to ')) {
+            dateB = dateB.split(' to ')[0].trim();
+        }
+        
+        return new Date(dateA) - new Date(dateB);
+    });
+    
+    // Update each countdown display in the modal
+    countdownItems.forEach((item, index) => {
+        if (index < allFestivals.length) {
+            const festival = allFestivals[index];
+            const countdownUnits = item.querySelectorAll('.countdown-unit .unit');
+            
+            if (countdownUnits.length >= 4) {
+                countdownUnits[0].textContent = String(festival.countdown.days || 0).padStart(3, '0');
+                countdownUnits[1].textContent = String(festival.countdown.hours || 0).padStart(2, '0');
+                countdownUnits[2].textContent = String(festival.countdown.minutes || 0).padStart(2, '0');
+                countdownUnits[3].textContent = String(festival.countdown.seconds || 0).padStart(2, '0');
+            }
+        }
+    });
 }
 
 // Global variable to track selected legend filter

@@ -608,7 +608,7 @@ body {
     padding: 8px;
     margin-top: 5px;
     font-size: 0.85em;
-    color: #856404;
+    color: #ffe9a5;
 }
 
 .popup-photo {
@@ -621,14 +621,90 @@ body {
 
 /* Enhanced countdown styles */
 .countdown-item.rare-event {
-    border-left: 4px solid #ff6b35;
-    background: linear-gradient(135deg, #fff7f0, #ffe8d4);
+    background: linear-gradient(135deg, #ffd166, #ffb4a2, #f7931e);
+    border: 2px solid rgba(255, 209, 102, 0.4);
+    color: #0f172a;
 }
 
 .countdown-item.rare-event .countdown-display {
-    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    background: linear-gradient(135deg, #2D2419, #1F1810);
+    color: #A0826D;
     position: relative;
     overflow: hidden;
+}
+
+/* Specific text styling for rare events */
+.countdown-item.rare-event h4 {
+    color: #5f4600 !important;
+    font-weight: 600;
+}
+
+.countdown-item.rare-event .location {
+    color: #83533d !important;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+.countdown-item.rare-event p {
+    color: #70351e !important;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+    font-weight: 500;
+}
+
+.countdown-item.rare-event .special-note {
+    background: rgb(255, 223, 164) !important;
+    color: #2D1810 !important;
+    border: 1px solid rgb(94, 62, 36);
+}
+
+/* Specific styling for every___years rarity indicators within rare events */
+.countdown-item.rare-event .rarity-every_6_years {
+    background: #86502b !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    animation: rare-glow 2s ease-in-out infinite alternate;
+}
+
+.countdown-item.rare-event .rarity-every_12_years {
+    background: #86502b !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    animation: rare-glow 2s ease-in-out infinite alternate;
+
+}
+
+.countdown-item.rare-event .rarity-every_144_years {
+    background: #86502b !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    animation: rare-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes rare-glow {
+    from {
+        box-shadow: 0 0 8px rgba(255, 252, 78, 0.6);
+    }
+    to {
+        box-shadow: 0 0 25px rgba(255, 134, 20, 0.9);
+    }
+}
+
+/* Enhanced countdown clock styling for rare events */
+.countdown-item.rare-event .countdown-unit {
+    background: rgba(95, 79, 57, 0.9) !important;
+    border: 1px solid rgba(160, 130, 109, 0.5);
+}
+
+.countdown-item.rare-event .countdown-unit .unit {
+    background: rgba(85, 68, 48, 0.9) !important;
+    color: #ffcc80 !important;
+    font-weight: 800;
+    border: 1px solid rgba(255, 204, 128, 0.3);
+}
+
+.countdown-item.rare-event .countdown-unit .label {
+    color: #d4af94 !important;
+    font-weight: 700;
 }
 
 .countdown-item.rare-event .countdown-display::before {
@@ -637,6 +713,7 @@ body {
     top: 5px;
     right: 10px;
     font-size: 1.2em;
+    color: #5f4600;
     animation: twinkle 2s ease-in-out infinite;
 }
 
@@ -993,6 +1070,35 @@ body {
 .festivals-narrow {
     max-width: 70%;
     margin: 15px auto;
+}
+
+/* State hover label styles */
+.state-label {
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.state-name-text {
+    color: white;
+    font-family: 'Gotham', sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+    white-space: nowrap;
+    letter-spacing: 7px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    animation: fadeInScale 0.2s ease-out;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .festival-rarity {
