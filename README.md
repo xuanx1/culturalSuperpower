@@ -12,7 +12,7 @@ A [visualization](https://xuanx1.github.io/culturalSuperpower/) showcasing the r
 - **Responsive design** that works across all devices
 
 ### 🏛️ Religious Sites Database
-- **97 sacred sites** across India covering 8 major religions:
+- Sacred sites across India covering 8 major religions:
   - 🕉️ Hindu temples and pilgrimage sites
   - ☸️ Buddhist monasteries and stupas  
   - ✝️ Christian churches and basilicas
