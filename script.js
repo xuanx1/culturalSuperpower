@@ -585,26 +585,26 @@ function showSiteDetailsModal(siteId) {
             </div>
             
             ${upcomingFestivals.length > 0 ? `
-                <div class="countdown-timer festivals-narrow">
-                    <h4>🎊 Upcoming Festivals</h4>
-                    ${upcomingFestivals.map(festival => `
-                            <div style="margin-bottom: 15px; ${festival.rarity === 'every_144_years' || festival.rarity === 'every_12_years' ? 'border: 2px solid #ff6b35; border-radius: 8px; padding: 10px; background: rgba(255, 107, 53, 0.1);' : ''}">
+                <div class="detail-item compact">
+                    <div class="detail-label">Upcoming Festivals</div>
+                    <div class="detail-value">
+                        ${upcomingFestivals.map(festival => `
+                            <div class="transport-box" style="width: 100%; margin: 8px 0; display: block; background: transparent; box-shadow: none; border: 1px solid rgba(255, 255, 255, 0.1); text-align: center;">
                                 <strong>${festival.name}</strong>
-                                ${festival.rarity ? `<span class="festival-rarity rarity-${festival.rarity}">${festival.rarity.replace(/_/g, ' ').toUpperCase()}</span>` : ''}
-                                <br>
-                                <small>${festival.description}.</small><br>
-                                ${festival.specialNote ? `<div class="special-note">⭐ ${festival.specialNote}</div>` : ''}
-                                <div style="background: rgba(255,255,255,0.2); padding: 8px; border-radius: 5px; margin-top: 8px;">
-                                    ⏰ ${festival.countdown.message}
+                                ${festival.rarity ? `<span class="festival-rarity rarity-${festival.rarity}" style="margin-left: 8px;">${festival.rarity.replace(/_/g, ' ').toUpperCase()}</span>` : ''}
+                                ${festival.specialNote ? `<div class="special-note" style="margin: 8px 0;">⭐ ${festival.specialNote}</div>` : ''}
+                                <div class="countdown-display-structured" style="margin: 15px 0;">
+                                    ${createStructuredCountdown(festival.countdown)}
                                 </div>
+                                <div style="font-weight: normal; opacity: 0.9; margin-top: 10px;">${festival.description}</div>
                             </div>
                         `).join('')}
                     </div>
-                ` : `
-                    <div class="countdown-timer festivals-narrow">
-                        <h4>🎊 Upcoming Festivals</h4>
-                        <p>No upcoming festivals scheduled</p>
-                    </div>
+                </div>` : `
+                <div class="detail-item compact">
+                    <div class="detail-label">🎊 Upcoming Festivals</div>
+                    <div class="detail-value">No upcoming festivals scheduled</div>
+                </div>
                 `}
         </div>
     `;
@@ -1343,6 +1343,9 @@ function updateCountdowns() {
     
     // Update countdown displays in Upcoming Festivals modal if it's open
     updateModalCountdowns();
+    
+    // Update countdown displays in Site Details modal if it's open
+    updateSiteDetailsCountdowns();
 }
 
 // Update countdown displays in the Upcoming Festivals modal
@@ -1393,6 +1396,55 @@ function updateModalCountdowns() {
         if (index < allFestivals.length) {
             const festival = allFestivals[index];
             const countdownUnits = item.querySelectorAll('.countdown-unit .unit');
+            
+            if (countdownUnits.length >= 4) {
+                countdownUnits[0].textContent = String(festival.countdown.days || 0).padStart(3, '0');
+                countdownUnits[1].textContent = String(festival.countdown.hours || 0).padStart(2, '0');
+                countdownUnits[2].textContent = String(festival.countdown.minutes || 0).padStart(2, '0');
+                countdownUnits[3].textContent = String(festival.countdown.seconds || 0).padStart(2, '0');
+            }
+        }
+    });
+}
+
+// Update countdown displays in the Site Details modal
+function updateSiteDetailsCountdowns() {
+    const siteModal = document.getElementById('siteModal');
+    if (!siteModal || siteModal.style.display !== 'block') {
+        return; // Modal is not open, no need to update
+    }
+    
+    // Find all countdown displays in the site details modal
+    const countdownDisplays = siteModal.querySelectorAll('.countdown-display-structured');
+    
+    if (countdownDisplays.length === 0) return;
+    
+    // Get the site ID from the modal title or find another way to identify the current site
+    const modalTitle = siteModal.querySelector('#siteModalTitle');
+    if (!modalTitle) return;
+    
+    // Extract site name from title (remove the icon and get the site name)
+    const titleText = modalTitle.textContent || modalTitle.innerText;
+    const siteName = titleText.replace(/^[^\s]+\s/, '').trim(); // Remove first word (icon) and whitespace
+    
+    // Find the site data
+    const site = religiousSites.find(s => s.name === siteName);
+    if (!site || !site.festivals) return;
+    
+    // Get fresh countdown data for this site's festivals
+    const upcomingFestivals = site.festivals
+        .map(festival => {
+            const countdown = calculateTimeUntil(festival.date);
+            return { ...festival, countdown };
+        })
+        .filter(festival => !festival.countdown.expired)
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
+    
+    // Update each countdown display
+    countdownDisplays.forEach((display, index) => {
+        if (index < upcomingFestivals.length) {
+            const festival = upcomingFestivals[index];
+            const countdownUnits = display.querySelectorAll('.countdown-unit .unit');
             
             if (countdownUnits.length >= 4) {
                 countdownUnits[0].textContent = String(festival.countdown.days || 0).padStart(3, '0');
