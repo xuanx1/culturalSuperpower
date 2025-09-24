@@ -10,9 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
     populateFilters();
     setupEventListeners();
     updateCountdowns();
-    
-    // Update countdowns every minute
-    setInterval(updateCountdowns, 60000);
+    populateLegend(); // Add legend population
+    setInterval(updateCountdowns, 1000);
 });
 
 // Initialize the Leaflet map
@@ -21,9 +20,14 @@ function initializeMap() {
     map = L.map('map', {
         minZoom: 5,
         maxZoom: 7,
-        zoomControl: true,
+        zoomControl: false,
         attributionControl: true
     }).setView([22.5937, 78.9629], 5);
+    
+    // Explicitly remove zoom control if it exists
+    if (map.zoomControl) {
+        map.removeControl(map.zoomControl);
+    }
     
     // Define tighter bounds for India only
     // Southwest corner: [6°N, 68°E] (Southern India, Western border)
@@ -426,7 +430,7 @@ function showSiteDetailsModal(siteId) {
     
     const modal = document.getElementById('siteModal');
     const title = document.getElementById('siteModalTitle');
-    const content = document.getElementById('siteModalContent');
+    const content = document.getElementById('siteModalBody');
     
     const isOptimal = isOptimalTime(site.bestMonths);
     const nextOptimal = isOptimal ? null : getNextOptimalTime(site.bestMonths);
@@ -539,24 +543,29 @@ function showSiteDetails(siteId) {
 
 // Populate filter dropdowns
 function populateFilters() {
-    const stateFilter = document.getElementById('stateFilter');
+    const stateDropdown = document.getElementById('stateDropdown');
     
-    // Add states to filter
+    // Extract unique states from religious sites
+    const states = [...new Set(religiousSites.map(site => site.state))].sort();
+    
+    // Add states to custom dropdown
     states.forEach(state => {
-        const option = document.createElement('option');
-        option.value = state;
-        option.textContent = state;
-        stateFilter.appendChild(option);
+        const item = document.createElement('div');
+        item.className = 'dropdown-item';
+        item.setAttribute('data-value', state);
+        item.textContent = state;
+        stateDropdown.appendChild(item);
     });
 }
 
 // Setup event listeners
 function setupEventListeners() {
-    // Religion filter
-    document.getElementById('religionFilter').addEventListener('change', applyFilters);
+    // Custom dropdown functionality
+    setupCustomDropdowns();
     
-    // State filter
-    document.getElementById('stateFilter').addEventListener('change', applyFilters);
+    // Keep these for compatibility (they'll be used by custom dropdowns)
+    // Religion filter - now handled by custom dropdown
+    // State filter - now handled by custom dropdown
     
     // Search box with dropdown
     const searchBox = document.getElementById('searchBox');
@@ -591,23 +600,35 @@ function setupEventListeners() {
         }
     });
     
-    // Site details modal
-    const siteModal = document.getElementById('siteModal');
-    const siteModalClose = siteModal.querySelector('.site-modal-close');
+    // Site details card
+    const closeSiteCard = document.getElementById('closeSiteCard');
     
-    siteModalClose.addEventListener('click', function() {
-        siteModal.style.display = 'none';
-    });
+    if (closeSiteCard) {
+        closeSiteCard.addEventListener('click', function() {
+            const siteDetailsCard = document.getElementById('siteDetailsCard');
+            siteDetailsCard.classList.remove('show');
+        });
+    }
     
     // Countdown modal
-    const countdownBtn = document.getElementById('showCountdowns');
     const modal = document.getElementById('countdownModal');
     const closeModal = modal.querySelector('.close');
     
-    countdownBtn.addEventListener('click', showCountdownModal);
-    closeModal.addEventListener('click', function() {
-        modal.style.display = 'none';
-    });
+    if (closeModal) {
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+    }
+    
+    // Site details modal
+    const siteModal = document.getElementById('siteModal');
+    const closeSiteModal = document.getElementById('closeSiteModal');
+    
+    if (closeSiteModal) {
+        closeSiteModal.addEventListener('click', function() {
+            siteModal.style.display = 'none';
+        });
+    }
     
     // Photo modal
     const photoModal = document.getElementById('photoModal');
@@ -629,6 +650,73 @@ function setupEventListeners() {
             siteModal.style.display = 'none';
         }
     });
+}
+
+// Setup custom dropdowns to match search dropdown styling
+function setupCustomDropdowns() {
+    // Initialize filter values
+    window.currentReligionFilter = 'all';
+    window.currentStateFilter = 'all';
+    
+    // Religion dropdown
+    const religionBtn = document.getElementById('religionFilterBtn');
+    const religionDropdown = document.getElementById('religionDropdown');
+    
+    religionBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        // Close state dropdown if open
+        document.getElementById('stateDropdown').style.display = 'none';
+        // Toggle religion dropdown
+        religionDropdown.style.display = religionDropdown.style.display === 'block' ? 'none' : 'block';
+    });
+    
+    // Religion dropdown items
+    religionDropdown.addEventListener('click', function(e) {
+        if (e.target.classList.contains('dropdown-item')) {
+            const value = e.target.getAttribute('data-value');
+            const text = e.target.textContent;
+            religionBtn.textContent = text;
+            window.currentReligionFilter = value;
+            religionDropdown.style.display = 'none';
+            applyFilters();
+        }
+    });
+    
+    // State dropdown
+    const stateBtn = document.getElementById('stateFilterBtn');
+    const stateDropdown = document.getElementById('stateDropdown');
+    
+    stateBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        // Close religion dropdown if open
+        religionDropdown.style.display = 'none';
+        // Toggle state dropdown
+        stateDropdown.style.display = stateDropdown.style.display === 'block' ? 'none' : 'block';
+    });
+    
+    // State dropdown items
+    stateDropdown.addEventListener('click', function(e) {
+        if (e.target.classList.contains('dropdown-item')) {
+            const value = e.target.getAttribute('data-value');
+            const text = e.target.textContent;
+            stateBtn.textContent = text;
+            window.currentStateFilter = value;
+            stateDropdown.style.display = 'none';
+            applyFilters();
+        }
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.custom-dropdown')) {
+            religionDropdown.style.display = 'none';
+            stateDropdown.style.display = 'none';
+        }
+    });
+    
+    // Update the filter functions to use our custom values
+    window.getCurrentReligionFilter = () => window.currentReligionFilter;
+    window.getCurrentStateFilter = () => window.currentStateFilter;
 }
 
 // Search dropdown functions
@@ -684,8 +772,8 @@ function selectSearchResult(siteId) {
 
 // Apply filters to map markers
 function applyFilters() {
-    const religionFilter = document.getElementById('religionFilter').value;
-    const stateFilter = document.getElementById('stateFilter').value;
+    const religionFilter = window.getCurrentReligionFilter ? window.getCurrentReligionFilter() : 'all';
+    const stateFilter = window.getCurrentStateFilter ? window.getCurrentStateFilter() : 'all';
     const searchText = document.getElementById('searchBox').value.toLowerCase();
     
     filteredSites = religiousSites.filter(site => {
@@ -716,22 +804,26 @@ function showCountdownModal() {
     const modal = document.getElementById('countdownModal');
     const countdownList = document.getElementById('countdownList');
     
-    // Collect all upcoming festivals
+    // Collect all upcoming festivals - use religiousSites if filteredSites is not available
     const allFestivals = [];
-    filteredSites.forEach(site => {
-        site.festivals.forEach(festival => {
-            const countdown = calculateTimeUntil(festival.date);
-            if (!countdown.expired) {
-                allFestivals.push({
-                    ...festival,
-                    siteName: site.name,
-                    siteState: site.state,
-                    religion: site.religion,
-                    countdown: countdown,
-                    siteId: site.id
-                });
-            }
-        });
+    const sitesToUse = (typeof filteredSites !== 'undefined' && filteredSites.length > 0) ? filteredSites : religiousSites;
+    
+    sitesToUse.forEach(site => {
+        if (site.festivals) {
+            site.festivals.forEach(festival => {
+                const countdown = calculateTimeUntil(festival.date);
+                if (!countdown.expired) {
+                    allFestivals.push({
+                        ...festival,
+                        siteName: site.name,
+                        siteState: site.state,
+                        religion: site.religion,
+                        countdown: countdown,
+                        siteId: site.id
+                    });
+                }
+            });
+        }
     });
     
     // Sort by date (earliest first) - handle date ranges properly
@@ -813,10 +905,294 @@ function switchMainPhoto(photoIndex, siteId) {
 }
 
 // Update all countdowns
+// Calculate time until a festival date
+function calculateTimeUntil(dateString) {
+    try {
+        const now = new Date();
+        const festivalDate = new Date(dateString);
+        
+        // Check if date is valid
+        if (isNaN(festivalDate.getTime())) {
+            return { expired: true, message: "Invalid date" };
+        }
+        
+        // If the date has passed, check next year
+        if (festivalDate < now) {
+            festivalDate.setFullYear(now.getFullYear() + 1);
+        }
+        
+        const timeDiff = festivalDate - now;
+        
+        if (timeDiff <= 0) {
+            return { expired: true, message: "Festival has passed" };
+        }
+        
+        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+        
+        return {
+            expired: false,
+            days: isNaN(days) ? 0 : days,
+            hours: isNaN(hours) ? 0 : hours,
+            minutes: isNaN(minutes) ? 0 : minutes,
+            seconds: isNaN(seconds) ? 0 : seconds,
+            message: `${days} days, ${hours} hours, ${minutes} minutes`
+        };
+    } catch (error) {
+        console.error('Error calculating time until:', error);
+        return { expired: true, message: "Calculation error" };
+    }
+}
+
+function getFestivalPhoto(festivalName, siteName, religion) {
+    // Map festivals to appropriate images based on name, site, or religion
+    const festivalImageMap = {
+        // Hindu festivals and sites
+        'maha shivaratri': 'hindu.png',
+        'diwali': 'hindu.png', 
+        'holi': 'hindu.png',
+        'ganesh chaturthi': 'hindu.png',
+        'durga puja': 'hindu.png',
+        'kedarnath': 'hindu.png',
+        'varanasi': 'hindu.png',
+        'kumbh': 'hindu.png',
+        
+        // Buddhist festivals and sites
+        'buddha': 'buddhist.webp',
+        'vesak': 'buddhist.webp',
+        'bodh gaya': 'buddhist.webp',
+        
+        // Sikh festivals and sites
+        'guru': 'sikh.svg',
+        'golden temple': 'sikh.svg',
+        'amritsar': 'sikh.svg',
+        
+        // Christian festivals and sites
+        'christmas': 'christian.svg',
+        'easter': 'christian.svg',
+        'goa': 'christian.svg',
+        
+        // Islamic festivals and sites
+        'eid': 'islam.png',
+        'ramadan': 'islam.png',
+        'mosque': 'islam.png',
+        
+        // Bahai
+        'bahai': 'bahai.webp'
+    };
+    
+    // Check festival name first
+    const lowerFestivalName = festivalName.toLowerCase();
+    for (const [key, image] of Object.entries(festivalImageMap)) {
+        if (lowerFestivalName.includes(key)) {
+            return image;
+        }
+    }
+    
+    // Check site name
+    const lowerSiteName = siteName.toLowerCase();
+    for (const [key, image] of Object.entries(festivalImageMap)) {
+        if (lowerSiteName.includes(key)) {
+            return image;
+        }
+    }
+    
+    // Fall back to religion-based images
+    const religionImageMap = {
+        'Hindu': 'hindu.png',
+        'Buddhist': 'buddhist.webp', 
+        'Sikh': 'sikh.svg',
+        'Christian': 'christian.svg',
+        'Islam': 'islam.png',
+        'Bahai': 'bahai.webp'
+    };
+    
+    return religionImageMap[religion] || 'hamsa.png'; // Default fallback
+}
+
 function updateCountdowns() {
-    // Update any visible countdowns in the page
-    const countdownElements = document.querySelectorAll('.countdown-display');
-    // This function can be expanded to update specific countdown displays
+    // Get all upcoming festivals from all sites
+    const allFestivals = [];
+    
+    religiousSites.forEach(site => {
+        if (site.festivals) {
+            site.festivals.forEach(festival => {
+                const countdown = calculateTimeUntil(festival.date);
+                if (!countdown.expired) {
+                    allFestivals.push({
+                        ...festival,
+                        siteName: site.name,
+                        siteId: site.id,
+                        location: site.state,
+                        religion: site.religion,
+                        countdown: countdown,
+                        siteDescription: site.description,
+                        festivalDescription: festival.description
+                    });
+                }
+            });
+        }
+    });
+    
+    // Sort by date to get the next upcoming festival
+    allFestivals.sort((a, b) => new Date(a.date) - new Date(b.date));
+    
+    const nextFestival = allFestivals[0];
+    
+    if (nextFestival) {
+        // Update countdown timer
+        document.getElementById('days').textContent = String(nextFestival.countdown.days).padStart(3, '0');
+        document.getElementById('hours').textContent = String(nextFestival.countdown.hours).padStart(2, '0');
+        document.getElementById('minutes').textContent = String(nextFestival.countdown.minutes).padStart(2, '0');
+        document.getElementById('seconds').textContent = String(nextFestival.countdown.seconds).padStart(2, '0');
+        
+        // Update festival photo
+        const festivalPhoto = document.getElementById('festivalPhoto');
+        if (festivalPhoto) {
+            const photoSrc = getFestivalPhoto(nextFestival.name, nextFestival.siteName, nextFestival.religion);
+            festivalPhoto.src = photoSrc;
+            festivalPhoto.alt = `${nextFestival.name} at ${nextFestival.siteName}`;
+            
+            // Make festival photo clickable
+            festivalPhoto.style.cursor = 'pointer';
+            festivalPhoto.style.transition = 'all 0.3s ease';
+            
+            festivalPhoto.onclick = () => {
+                const siteData = religiousSites.find(site => site.id === nextFestival.siteId);
+                if (siteData) {
+                    map.setView(siteData.coordinates, 12);
+                    showSiteDetailsModal(siteData);
+                }
+            };
+            
+            // Add hover effect to photo
+            festivalPhoto.onmouseenter = () => {
+                festivalPhoto.style.transform = 'scale(1.02)';
+                festivalPhoto.style.filter = 'brightness(1.1)';
+            };
+            
+            festivalPhoto.onmouseleave = () => {
+                festivalPhoto.style.transform = 'scale(1)';
+                festivalPhoto.style.filter = 'brightness(1)';
+            };
+        }
+        
+        // Update site preview with actual festival data
+        const sitePreview = document.querySelector('.site-preview .site-info');
+        if (sitePreview) {
+            sitePreview.innerHTML = `
+                <h4><span class="festival-name-gradient">${nextFestival.name}</span><br><span class="festival-location">in ${nextFestival.siteName}</span></h4>
+                <p>${nextFestival.festivalDescription}. ${nextFestival.siteDescription}</p>
+            `;
+            
+            // Make the site preview clickable
+            sitePreview.style.cursor = 'pointer';
+            sitePreview.style.transition = 'all 0.3s ease';
+            
+            // Add click event to show details and zoom to location
+            sitePreview.onclick = () => {
+                const siteData = religiousSites.find(site => site.id === nextFestival.siteId);
+                if (siteData) {
+                    map.setView(siteData.coordinates, 12);
+                    showSiteDetailsModal(siteData);
+                }
+            };
+            
+            // Add hover effects (without layout shift)
+            sitePreview.onmouseenter = () => {
+                sitePreview.style.backgroundColor = 'rgba(102, 126, 234, 0.05)';
+                sitePreview.style.borderRadius = '8px';
+                sitePreview.style.transform = 'scale(1.02)';
+            };
+            
+            sitePreview.onmouseleave = () => {
+                sitePreview.style.backgroundColor = 'transparent';
+                sitePreview.style.transform = 'scale(1)';
+            };
+            
+            // Make the site preview clickable
+            sitePreview.style.cursor = 'pointer';
+            sitePreview.style.transition = 'all 0.3s ease';
+            
+            // Add click event to show details and zoom to location
+            sitePreview.onclick = () => {
+                // Find the site data for this festival
+                const siteData = religiousSites.find(site => site.id === nextFestival.siteId);
+                if (siteData) {
+                    // Zoom to location
+                    map.setView(siteData.coordinates, 12);
+                    // Show details modal
+                    showSiteDetailsModal(siteData);
+                }
+            };
+            
+            // Add hover effects (without layout shift)
+            sitePreview.onmouseenter = () => {
+                sitePreview.style.backgroundColor = 'rgba(102, 126, 234, 0.05)';
+                sitePreview.style.borderRadius = '8px';
+                sitePreview.style.transform = 'scale(1.02)';
+            };
+            
+            sitePreview.onmouseleave = () => {
+                sitePreview.style.backgroundColor = 'transparent';
+                sitePreview.style.transform = 'scale(1)';
+            };
+        }
+        
+        // Update next festival header
+        const festivalHeader = document.querySelector('div[style*="Next festival starts in"]');
+        if (festivalHeader) {
+            festivalHeader.textContent = `${nextFestival.name} starts in`;
+        }
+    } else {
+        // Fallback if no upcoming festivals
+        document.getElementById('days').textContent = '000';
+        document.getElementById('hours').textContent = '00';
+        document.getElementById('minutes').textContent = '00';
+        document.getElementById('seconds').textContent = '00';
+        
+        // Set default photo
+        const festivalPhoto = document.getElementById('festivalPhoto');
+        if (festivalPhoto) {
+            festivalPhoto.src = 'hamsa.png';
+            festivalPhoto.alt = 'Cultural heritage';
+        }
+        
+        const sitePreview = document.querySelector('.site-preview .site-info');
+        if (sitePreview) {
+            sitePreview.innerHTML = `
+                <h4>No Upcoming Festivals</h4>
+                <p>Check back later for festival dates and celebrations.</p>
+            `;
+        }
+    }
+}
+
+// Populate legend with actual map icons
+function populateLegend() {
+    const legendItems = document.getElementById('legendItems');
+    if (!legendItems) return;
+    
+    // Sort religions alphabetically, but keep 'other' at the end
+    const religions = ['bahai', 'buddhist', 'christian', 'hindu', 'islam', 'jain', 'sikh', 'other'];
+    
+    legendItems.innerHTML = religions.map(religion => {
+        const icon = renderIcon(religion, '20px');
+        const displayName = religion === 'islam' ? 'Islam' : 
+                          religion === 'bahai' ? 'Bahá\'í' : 
+                          religion.charAt(0).toUpperCase() + religion.slice(1);
+        
+        return `
+            <div class="legend-item">
+                <div class="legend-icon">
+                    ${icon}
+                </div>
+                <span>${displayName}</span>
+            </div>
+        `;
+    }).join('');
 }
 
 // Make functions globally available

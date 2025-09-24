@@ -3,57 +3,455 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Religious Sites of India - Interactive Map</title>
+    <title>Sacred Sites of India</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="controls">
-        <div class="filters">
-            <select id="religionFilter">
-                <option value="all">All Religions</option>
-                <option value="hindu">Hindu</option>
-                <option value="buddhist">Buddhist</option>
-                <option value="jain">Jain</option>
-                <option value="sikh">Sikh</option>
-                <option value="christian">Christian</option>
-                <option value="islamic">Islamic</option>
-                <option value="bahai">Bahá'í</option>
-                <option value="other">Other</option>
-            </select>
+    <!-- Sacred Sites Hero Section -->
+    <section class="hero-section">
+        <style>
+            .hero-section {
+                --bg1:#0f172a;
+                --bg2:#061024;
+                --accent:#ffd166;
+                --muted:#9aa8c3;
+                --card:#0b1220;
+                --glass: rgba(255,255,255,0.04);
+                --glow: 0 8px 30px rgba(255,209,102,0.08);
+                --radius:16px;
+                font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+                min-height:100vh;
+                background: radial-gradient(1000px 600px at 10% 10%, rgba(255,209,102,0.03), transparent 8%),
+                            linear-gradient(180deg,var(--bg1),var(--bg2));
+                color:#e6eef8;
+                -webkit-font-smoothing:antialiased;
+                -moz-osx-font-smoothing:grayscale;
+                display:flex;
+                align-items:flex-start;
+                justify-content:flex-start;
+                padding:0;
+                position: relative;
+            }
+
+            .hero {
+                width: 100%;
+                height: 100vh;
+                position: relative;
+                display: block;
+            }
             
-            <select id="stateFilter">
-                <option value="all">All States</option>
-            </select>
+            /* Full-screen map */
+            #map {
+                width: 100vw !important;
+                height: 100vh !important;
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                z-index: 1 !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+            }
             
-            <div class="search-container">
-                <input type="text" id="searchBox" placeholder="Search religious sites...">
-                <div id="searchDropdown" class="search-dropdown"></div>
-            </div>>
+            /* Title overlay - top left */
+            .title-overlay {
+                position: fixed;
+                top: 5px;
+                left: 20px;
+                z-index: 1000;
+                padding: 20px;
+                max-width: 400px;
+            }
             
-            <button id="showCountdowns" class="countdown-btn">
-                <i class="fas fa-clock"></i> Festival Countdowns
-            </button>
+            /* Countdown overlay - top right */
+            .countdown-overlay {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 1000;
+                background: linear-gradient(180deg, rgba(15,23,42,0.9), rgba(6,16,36,0.8));
+                backdrop-filter: blur(10px);
+                border-radius: 16px;
+                padding: 18px;
+                border: 1px solid rgba(255,255,255,0.1);
+                box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+                max-width: 320px;
+                width: auto;
+            }
+            
+            /* Hide search and filters */
+            .hero-controls {
+                display: none !important;
+            }
+            
+            /* Legend overlay - bottom left */
+            .legend-overlay {
+                position: fixed;
+                bottom: 20px;
+                left: 20px;
+                z-index: 1000;
+                padding: 16px;
+                max-width: 250px;
+            }
+            
+            .legend-title {
+                color: #fff;
+                font-size: 14px;
+                font-weight: 700;
+                margin-bottom: 12px;
+                text-align: center;
+                text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            }
+            
+            .legend-items {
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+            }
+            
+            .legend-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                font-size: 12px;
+                color: #fff;
+                text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            }
+            
+            .legend-icon {
+                width: 30px;
+                height: 30px;
+                flex-shrink: 0;
+                background: white;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgba(0,0,0,0.2);
+            }
+            
+            .legend-icon img {
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+            }
+
+            .hero .left { padding-right:6px; }
+
+            .hero h1 {
+                margin:0 0 10px 0;
+                font-size: clamp(28px,4vw,46px);
+                line-height:1.02;
+                letter-spacing: -0.02em;
+                display:flex;
+                align-items:center;
+                gap:14px;
+            }
+
+            .hero h1 .title {
+                background: linear-gradient(90deg,#fff 0%, #ffd166 30%, #ffb4a2 60%);
+                -webkit-background-clip:text;
+                background-clip:text;
+                color:transparent;
+                font-weight:700;
+            }
+
+            .hero .badge {
+                display:inline-flex;
+                align-items:center;
+                gap:8px;
+                padding:6px 10px;
+                border-radius:999px;
+                background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+                border:1px solid rgba(255,255,255,0.04);
+                font-weight:600;
+                color:var(--accent);
+                font-size:13px;
+            }
+
+            .hero p.lead {
+                margin:14px 0 20px 0;
+                color:var(--muted);
+                font-size:16px;
+                max-width:70%;
+            }
+
+            .hero .meta {
+                display:flex;
+                gap:12px;
+                flex-wrap:wrap;
+                margin-bottom:16px;
+            }
+
+            .hero .pill {
+                background:var(--card);
+                padding:10px 12px;
+                border-radius:99px;
+                font-size:13px;
+                color:#dce9ff;
+                border:1px solid rgba(255,255,255,0.03);
+                box-shadow: 0 6px 18px rgba(2,6,23,0.5);
+            }
+
+            .hero .card {
+                background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+                border-radius:12px;
+                padding:18px;
+                display:flex;
+                flex-direction:column;
+                gap:12px;
+                align-items:stretch;
+                border:1px solid rgba(255,255,255,0.03);
+            }
+
+            .hero .countdown {
+                display:flex;
+                gap:10px;
+                justify-content:space-between;
+            }
+
+            .hero .countdown .unit {
+                background:var(--glass);
+                padding:12px;
+                border-radius:10px;
+                min-width:60px;
+                text-align:center;
+                font-weight:700;
+                color:#fff;
+            }
+
+            .hero .countdown .label {
+                display:block;
+                font-size:11px;
+                color:var(--muted);
+                font-weight:600;
+                margin-top:6px;
+                text-align:center;
+            }
+
+            .hero .site-preview {
+                display:flex;
+                gap:12px;
+                align-items:center;
+                margin-top:6px;
+            }
+
+            .hero .site-thumb {
+                min-width:72px;
+                min-height:72px;
+                border-radius:10px;
+                background:linear-gradient(135deg,#ffd16622,#ffb4a222);
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                font-weight:800;
+                color:#111;
+                font-size:22px;
+                border:1px solid rgba(255,255,255,0.04);
+            }
+
+            .hero .site-info h4 { margin:0; font-size:16px; }
+            .hero .site-info p { margin:6px 0 0 0; color:var(--muted); font-size:13px; }
+
+            .hero .actions {
+                display:flex;
+                gap:10px;
+                margin-top:10px;
+            }
+
+            .hero .btn {
+                padding:10px 12px;
+                border-radius:10px;
+                border:0;
+                cursor:pointer;
+                font-weight:700;
+                background:var(--accent);
+                color:#08102a;
+                box-shadow: 0 8px 18px rgba(255,209,102,0.12);
+            }
+
+            .hero .btn.ghost {
+                background:transparent;
+                border:1px solid rgba(255,255,255,0.06);
+                color:#dfefff;
+            }
+
+            .hero .sub {
+                font-size:12px;
+                color:var(--muted);
+                margin-top:10px;
+            }
+
+            .hero .orb {
+                width:24px;
+                height:24px;
+                border-radius:50%;
+                box-shadow:0 0 20px rgba(255,209,102,0.6), 0 0 40px rgba(255,209,102,0.4), 0 0 60px rgba(255,209,102,0.2);
+                background: linear-gradient(180deg,#ffd166,#ffb4a2);
+                transform:translateY(0);
+                animation: float 3.6s ease-in-out infinite, glow 2s ease-in-out infinite alternate;
+            }
+            
+            @keyframes glow {
+                from {
+                    box-shadow: 0 0 20px rgba(255,209,102,0.6), 0 0 40px rgba(255,209,102,0.4), 0 0 60px rgba(255,209,102,0.2);
+                }
+                to {
+                    box-shadow: 0 0 30px rgba(255,209,102,0.8), 0 0 60px rgba(255,209,102,0.6), 0 0 90px rgba(255,209,102,0.4);
+                }
+            }
+
+            @keyframes float {
+                0% { transform:translateY(0); }
+                50% { transform:translateY(-6px); }
+                100% { transform:translateY(0); }
+            }
+
+            @media (max-width:920px) {
+                .hero { grid-template-columns:1fr; padding:22px; }
+                .hero p.lead { max-width:100%; }
+            }
+
+            .scroll-indicator {
+                position: absolute;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+                color: var(--muted);
+                cursor: pointer;
+                animation: bounce 2s infinite;
+            }
+
+            @keyframes bounce {
+                0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+                40% { transform: translateX(-50%) translateY(-10px); }
+                60% { transform: translateX(-50%) translateY(-5px); }
+            }
+        </style>
+
+        <div class="hero" role="banner" aria-label="Sacred Sites hero">
+            <!-- Title Overlay (Top Left) -->
+            <div class="title-overlay">
+                <h1>
+                    <span class="title">Sacred Sites of India</span>
+                    <span style="width:8px"></span>
+                    <span style="display:inline-flex;align-items:center" title="live">
+                        <span class="orb" aria-hidden="true"></span>
+                    </span>
+                </h1>
+                <p class="lead">Discover India's spiritual heritage with live countdowns that tell you when the next big thing opens.</p>
+            </div>
+            
+            <div class="left">
+
+                <!-- Search and Filter Island -->
+                <div class="hero-controls">
+                    <div class="control-island unified-controls">
+                        <div class="search-container search-bar-width">
+                            <input type="text" id="searchBox" placeholder="Search religious sites...">
+                            <div id="searchDropdown" class="search-dropdown"></div>
+                        </div>
+                        
+                        <div class="custom-dropdown">
+                            <button class="dropdown-button religion-filter-width" id="religionFilterBtn">All Religions</button>
+                            <div class="dropdown-content" id="religionDropdown">
+                                <div class="dropdown-item" data-value="all">All Religions</div>
+                                <div class="dropdown-item" data-value="hindu">Hindu</div>
+                                <div class="dropdown-item" data-value="buddhist">Buddhist</div>
+                                <div class="dropdown-item" data-value="jain">Jain</div>
+                                <div class="dropdown-item" data-value="sikh">Sikh</div>
+                                <div class="dropdown-item" data-value="christian">Christian</div>
+                                <div class="dropdown-item" data-value="islamic">Islamic</div>
+                                <div class="dropdown-item" data-value="bahai">Bahá'í</div>
+                                <div class="dropdown-item" data-value="other">Other</div>
+                            </div>
+                        </div>
+                        
+                        <div class="custom-dropdown">
+                            <button class="dropdown-button state-filter-width" id="stateFilterBtn">All States</button>
+                            <div class="dropdown-content" id="stateDropdown">
+                                <div class="dropdown-item" data-value="all">All States</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map and Details Container -->
+                <div class="map-details-container">
+                    <div id="map" style="width: 600px; height: 600px; border-radius: 12px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); border: 2px solid rgba(255,255,255,0.1);"></div>
+                    
+                    <!-- Site Details Card -->
+                    <div id="siteDetailsCard" class="site-details-card">
+                        <div class="card-header">
+                            <h3 id="siteCardTitle">Site Information</h3>
+                            <button class="close-btn" id="closeSiteCard">&times;</button>
+                        </div>
+                        <div id="siteCardContent" class="card-content">
+                            <p>Click on a site marker to view details</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="countdown-overlay" aria-label="Countdown and preview">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px">
+                    <div>
+                        <div style="font-size:13px;color:var(--muted);font-weight:700">Next festival starts in</div>
+                    </div>
+
+                </div>
+
+                <div class="countdown" role="timer" aria-live="polite">
+                    <div>
+                        <div class="unit" id="days">000</div>
+                        <div class="label">Days</div>
+                    </div>
+                    <div>
+                        <div class="unit" id="hours">00</div>
+                        <div class="label">Hours</div>
+                    </div>
+                    <div>
+                        <div class="unit" id="minutes">00</div>
+                        <div class="label">Minutes</div>
+                    </div>
+                    <div>
+                        <div class="unit" id="seconds">00</div>
+                        <div class="label">Seconds</div>
+                    </div>
+                </div>
+
+                <div class="festival-photo-container">
+                    <img id="festivalPhoto" class="festival-photo" src="hamsa.png" alt="Festival preview" />
+                </div>
+
+                <div class="site-preview">
+                    <div class="site-info">
+                        <h4>Varanasi — Ganga Ghats</h4>
+                        <p>Sunrise rituals, ghats, and fragrant morning processions. Low-light photography recommended at dawn.</p>
+                    </div>
+                </div>
+
+                <div class="actions" style="margin-top:15px;display:flex;justify-content:center">
+                    <button class="btn gradient-btn" id="viewItineraryBtn" style="background: linear-gradient(90deg, #fff 0%, #ffd166 30%, #ffb4a2 60%); color: #08102a; font-weight: 700; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;"><i class="fas fa-clock"></i> Explore Other Festivals</button>
+                </div>
+            </aside>
+            
+            <!-- Legend Overlay (Bottom Left) -->
+            <div class="legend-overlay">
+                <div class="legend-items" id="legendItems">
+                    <!-- Legend items will be populated by JavaScript using actual map icons -->
+                </div>
+            </div>
         </div>
+
+
+    </section>
+
     </div>
 
-    <div class="main-container">
-        <div id="map"></div>
-    </div>
 
-    <!-- Site Details Modal -->
-    <div id="siteModal" class="modal site-modal">
-        <div class="modal-content site-modal-content">
-            <div class="modal-header">
-                <h2 id="siteModalTitle">Site Information</h2>
-                <span class="close site-modal-close">&times;</span>
-            </div>
-            <div id="siteModalContent" class="site-modal-body">
-                <!-- Site details will be populated here -->
-            </div>
-        </div>
-    </div>
 
     <div id="countdownModal" class="modal">
         <div class="modal-content">
@@ -67,6 +465,19 @@
         </div>
     </div>
 
+    <!-- Site Details Modal -->
+    <div id="siteModal" class="modal site-modal">
+        <div class="modal-content site-modal-content">
+            <div class="modal-header">
+                <h2 id="siteModalTitle"><i class="fas fa-map-marker-alt"></i> Site Details</h2>
+                <span class="close" id="closeSiteModal">&times;</span>
+            </div>
+            <div id="siteModalBody" class="site-modal-body">
+                <!-- Site details will be populated here -->
+            </div>
+        </div>
+    </div>
+
     <!-- Photo Modal -->
     <div id="photoModal" class="photo-modal">
         <span class="photo-modal-close">&times;</span>
@@ -76,6 +487,80 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="religiousSites.js"></script>
+    <script>
+        // Hero section countdown functionality
+        function getTargetDate(){
+            const now = new Date();
+            const year = now.getFullYear();
+            // Default target: Oct 1 (start of popular cool/dry window in many places)
+            let target = new Date(year, 9, 1, 0, 0, 0, 0); // months are 0-indexed (9 = Oct)
+            if (now >= target) {
+                target = new Date(year + 1, 9, 1, 0, 0, 0, 0);
+            }
+            return target;
+        }
+
+        function pad(n, digits=2){
+            return String(n).padStart(digits,'0');
+        }
+
+        function updateHeroCountdown(){
+            const target = getTargetDate();
+            const now = new Date();
+            const diff = Math.max(0, Math.floor((target - now) / 1000)); // seconds
+
+            const days = Math.floor(diff / 86400);
+            const hours = Math.floor((diff % 86400) / 3600);
+            const minutes = Math.floor((diff % 3600) / 60);
+            const seconds = diff % 60;
+
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+
+            if (daysEl) daysEl.textContent = pad(days, Math.max(3,String(days).length));
+            if (hoursEl) hoursEl.textContent = pad(hours);
+            if (minutesEl) minutesEl.textContent = pad(minutes);
+            if (secondsEl) secondsEl.textContent = pad(seconds);
+        }
+
+        // Scroll to map function
+        function scrollToMap() {
+            document.getElementById('mainApp').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start' 
+            });
+        }
+
+        // Initialize page - countdown handled by script.js
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // Hero countdown button handlers
+            const viewItineraryBtn = document.getElementById('viewItineraryBtn');
+            const heroCountdownBtn2 = document.getElementById('heroCountdownBtn2');
+            
+            if (viewItineraryBtn) {
+                viewItineraryBtn.addEventListener('click', function() {
+                    // Open countdown modal directly without scrolling
+                    if (typeof showCountdownModal === 'function') {
+                        showCountdownModal();
+                    }
+                });
+            }
+
+            if (heroCountdownBtn2) {
+                heroCountdownBtn2.addEventListener('click', function() {
+                    scrollToMap();
+                    setTimeout(() => {
+                        if (typeof showCountdownModal === 'function') {
+                            showCountdownModal();
+                        }
+                    }, 1000);
+                });
+            }
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
