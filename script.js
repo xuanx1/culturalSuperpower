@@ -477,6 +477,7 @@ function getSiteImagePath(siteName) {
         'Haridwar': 'Haridwar.png',
         'Iskcon Temple Mayapur': 'Iskcon-Temple-Mayapur.webp',
         'Jagannath Temple, Puri': 'Shri-Jagannath-Temple.jpg',
+        'Jagannath Temple, Puri (Tribal Heritage)': 'Shri-Jagannath-Temple.jpg',
         'Kalighat Temple, Kolkata': 'Kalighat-Temple-Kolkata.jpg',
         'Kamakhya Temple': 'Kamakhya-Temple.jpg',
         'Kashi Vishwanath Temple, Varanasi': 'Kashi-Vishwanath-Temple.jpg',
@@ -522,6 +523,7 @@ function getSiteImagePath(siteName) {
         'Sanchi Stupa': 'Sanchi-Stupa.jpg',
         'Sarnath': 'sarnath-varanasi-temple.jpg',
         'Tawang Monastery': 'tawang-monastery.jpg',
+        'Tawang Monastery (Bon Influence)': 'tawang-monastery.jpg',
 
         // Sikh Gurdwaras
         'Akal Takht': 'Akal-Takht.jpg',
@@ -575,6 +577,7 @@ function getSiteImagePath(siteName) {
 
         // Special Festival Sites
         'Allahabad (Prayagraj) - Kumbh Mela': 'Haridwar.png', // Use Haridwar image for Kumbh venue
+        'Lumbini (Kapilavastu)': 'Kapilavastu.jpg', // Alternative name mapping
         'Jama Masjid, Old Delhi': 'Jama-Masjid- Delhi.webp', // Alternative name for Jama Masjid
         'Dargah Sharif, Ajmer': 'Ajmer-Sharif-Dargah.jpg', // Alternative name for Ajmer Sharif
         'Haji Ali Dargah, Mumbai': 'Haji-Ali-Dargah.jpg', // Alternative name for Haji Ali
